@@ -2,23 +2,185 @@
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { useEffect, useRef } from "react"
-import { Playfair_Display, Inter } from 'next/font/google'
-
-const playfair = Playfair_Display({ 
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['400', '500'],
-  style: ['normal'],
-})
+import { useEffect, useRef, useState } from "react"
+import { Inter, Manrope } from 'next/font/google'
+import CapabilitiesSection from "@/components/sections/CapabilitiesSection"
+import { 
+  ChevronDownIcon, 
+  CheckIcon, 
+  PlayIcon, 
+  ArrowRightIcon, 
+  ShieldCheckIcon, 
+  ZapIcon, 
+  BarChart3Icon, 
+  UsersIcon, 
+  FileTextIcon, 
+  BrainCircuitIcon, 
+  TrendingUpIcon, 
+  LockIcon, 
+  GlobeIcon, 
+  DatabaseIcon,
+  AlertTriangleIcon,
+  TargetIcon,
+  ClockIcon,
+  StarIcon
+} from 'lucide-react'
 
 const inter = Inter({
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   display: 'swap',
+})
+
+const manrope = Manrope({
+  subsets: ['latin', 'cyrillic'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
 })
 
 export default function Page() {
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  const [activeSlide, setActiveSlide] = useState(0)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    company: '',
+    position: '',
+    phone: ''
+  })
+  const observerRef = useRef<IntersectionObserver | null>(null)
+
+  const productSlides = [
+    {
+      title: "Дашборд CEO",
+      description: "Индекс риска, ущерб ₽, матрица критичности",
+      image: "/images/dashboard-ceo.png"
+    },
+    {
+      title: "Kanban-реестр",
+      description: "Карточки рисков с вероятностью и ущербом",
+      image: "/images/kanban-registry.png"
+    },
+    {
+      title: "Митигация",
+      description: "Выберите стратегию → получите чек-лист",
+      image: "/images/mitigation.png"
+    },
+    {
+      title: "Контракты",
+      description: "ИИ извлекает обязательства из DOCX/PDF",
+      image: "/images/contracts.png"
+    },
+    {
+      title: "Аналитика & отчёты",
+      description: "Срезы по отделам, срокам, стадиям",
+      image: "/images/analytics.png"
+    }
+  ]
+
+  const capabilities = [
+    {
+      icon: <BrainCircuitIcon className="w-8 h-8" />,
+      title: "AI-анализ рисков",
+      description: "Автоматическое выявление и оценка корпоративных рисков с помощью ИИ"
+    },
+    {
+      icon: <TargetIcon className="w-8 h-8" />,
+      title: "Единая система",
+      description: "Все типы рисков в одной платформе: операционные, финансовые, правовые"
+    },
+    {
+      icon: <ZapIcon className="w-8 h-8" />,
+      title: "Автоматизация",
+      description: "Превращение решений в конкретные задачи с назначением ответственных"
+    },
+    {
+      icon: <BarChart3Icon className="w-8 h-8" />,
+      title: "Аналитика",
+      description: "Детальная отчетность и прогнозирование развития рисков"
+    },
+    {
+      icon: <ShieldCheckIcon className="w-8 h-8" />,
+      title: "Безопасность",
+      description: "Соответствие стандартам безопасности и защиты данных"
+    },
+    {
+      icon: <UsersIcon className="w-8 h-8" />,
+      title: "Коллаборация",
+      description: "Совместная работа команд над управлением рисками"
+    }
+  ]
+
+  const targetAudience = [
+    { role: "CRO", description: "Chief Risk Officer" },
+    { role: "Compliance", description: "Руководители комплаенса" },
+    { role: "Legal Head", description: "Главные юристы" },
+    { role: "HR-D", description: "HR-директора" },
+    { role: "COO", description: "Операционные директора" },
+    { role: "CISO", description: "Директора по ИБ" },
+    { role: "CFO", description: "Финансовые директора" }
+  ]
+
+  const faqItems = [
+    {
+      question: "Чем «Право (риски)» отличается от классических GRC?",
+      answer: "Фокус на AI-цикле выявления-митигации, а не только отчётности. Мы автоматизируем весь процесс от обнаружения риска до конкретных действий."
+    },
+    {
+      question: "Сколько длится внедрение?",
+      answer: "MVP-запуск за 4–6 недель при готовых данных. Полное внедрение занимает 2-3 месяца в зависимости от сложности интеграций."
+    },
+    {
+      question: "Какие интеграции есть?",
+      answer: "REST API, SFTP import, Webhooks; готовые коннекторы Jira, SAP, 1C. Также поддерживаем интеграцию с популярными CRM и ERP системами."
+    },
+    {
+      question: "Возможен ли on-premise?",
+      answer: "В дорожной карте на Q1 2026, сейчас SaaS EU-кластер с высоким уровнем безопасности и соответствием GDPR."
+    },
+    {
+      question: "Что в roadmap?",
+      answer: "Машинное обучение для прогнозирования рисков, интеграция с внешними источниками данных, мобильное приложение, on-premise решение."
+    },
+    {
+      question: "Сколько стоит?",
+      answer: "Ценообразование user-tier, финальная цена после интервью. Стартовые планы от 50 000₽/месяц для команды до 10 человек."
+    }
+  ]
+
+  const workflowSteps = [
+    {
+      step: "01",
+      title: "Выявление",
+      description: "AI сканирует документы, процессы и выявляет потенциальные риски",
+      icon: <BrainCircuitIcon className="w-8 h-8" />,
+      color: "from-blue-500 to-cyan-500",
+      bgColor: "bg-blue-500/10"
+    },
+    {
+      step: "02", 
+      title: "Оценка",
+      description: "Автоматический расчет вероятности и ущерба, присвоение приоритета",
+      icon: <BarChart3Icon className="w-8 h-8" />,
+      color: "from-purple-500 to-pink-500", 
+      bgColor: "bg-purple-500/10"
+    },
+    {
+      step: "03",
+      title: "Планирование",
+      description: "Формирование AI-плана действий с конкретными шагами митигации",
+      icon: <TargetIcon className="w-8 h-8" />,
+      color: "from-green-500 to-emerald-500",
+      bgColor: "bg-green-500/10"
+    },
+    {
+      step: "04",
+      title: "Исполнение",
+      description: "Превращение плана в задачи с назначением ответственных и дедлайнов",
+      icon: <CheckIcon className="w-8 h-8" />,
+      color: "from-orange-500 to-red-500",
+      bgColor: "bg-orange-500/10"
+    }
+  ]
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver((entries) => {
@@ -40,37 +202,32 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    const loadTally = () => {
-      const existingScript = document.querySelector('script[src="https://tally.so/widgets/embed.js"]');
-      if (!existingScript) {
-        const script = document.createElement('script');
-        script.src = "https://tally.so/widgets/embed.js";
-        script.async = true;
-        script.onload = () => {
-          // @ts-ignore
-          if (window.Tally) {
-            // @ts-ignore
-            window.Tally.loadEmbeds();
-          }
-        };
-        document.body.appendChild(script);
-      }
-    };
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % productSlides.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
 
-    loadTally();
-  }, []);
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Здесь будет логика отправки формы
+    console.log('Form submitted:', formData)
+    alert('Спасибо! Мы свяжемся с вами в ближайшее время.')
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
 
   return (
-    <div className={`flex flex-col min-h-screen bg-black text-foreground bg-dotted-grid ${inter.className}`}>
+    <div className={`flex flex-col min-h-screen bg-[#10131a] text-white ${inter.className}`}>
       <style jsx global>{`
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes shimmer {
-          0% { background-position: 0% 0; }
-          100% { background-position: 200% 0; }
         }
 
         .fade-in {
@@ -82,72 +239,6 @@ export default function Page() {
         .delay-2 { animation-delay: 0.4s; }
         .delay-3 { animation-delay: 0.6s; }
         
-        .glimmer-card {
-          position: relative;
-          background: rgb(23, 23, 23);
-          border-radius: 12px;
-          overflow: hidden;
-        }
-        
-        .glimmer-card::before {
-          content: '';
-          position: absolute;
-          inset: -1px;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(236, 72, 153, 0.03),
-            rgba(236, 72, 153, 0.06),
-            rgba(236, 72, 153, 0.03),
-            transparent
-          );
-          background-size: 200% 100%;
-          animation: shimmer 8s ease-in-out infinite;
-          pointer-events: none;
-        }
-
-        .glimmer-pill {
-          position: relative;
-          background: rgb(23, 23, 23);
-          border-radius: 9999px;
-          overflow: hidden;
-        }
-        
-        .glimmer-pill::before {
-          content: '';
-          position: absolute;
-          inset: -1px;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(236, 72, 153, 0.03),
-            rgba(236, 72, 153, 0.06),
-            rgba(236, 72, 153, 0.03),
-            transparent
-          );
-          background-size: 200% 100%;
-          animation: shimmer 8s ease-in-out infinite;
-          pointer-events: none;
-        }
-
-        .hero-glow {
-          position: absolute;
-          top: 85%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: 140%;
-          height: 600px;
-          background: radial-gradient(
-            circle at center,
-            rgba(255, 255, 255, 0.08) 0%,
-            rgba(255, 255, 255, 0.03) 35%,
-            transparent 70%
-          );
-          pointer-events: none;
-          z-index: 0;
-          filter: blur(50px);
-        }
-
         .scroll-animation {
           opacity: 0;
           transform: translateY(20px);
@@ -164,14 +255,32 @@ export default function Page() {
         .scroll-delay-3 { transition-delay: 0.3s; }
       `}</style>
 
+      {/* Top Bar */}
+      {/* <div className="bg-gray-900 text-white py-3 px-6 text-center text-sm border-b border-gray-800">
+        <span className="font-medium">Early Access открыт. Записывайтесь на UX-интервью и получите доступ к beta-версии</span>
+      </div> */}
+
       {/* Navigation */}
-      <header className="flex items-center justify-between py-4 px-6 border-b border-neutral-800/50">
-        <Link href="/" className={`text-2xl md:text-3xl font-medium ${playfair.className}`}>
-          VibeDev.ai
-        </Link>
-        <nav className="flex items-center gap-4">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-md">
+        <div className="max-w-7xl mx-auto flex w-full items-center justify-between py-4 px-6">
+          <Link href="/" className={`flex items-center gap-3 ${manrope.className}`}>
+            <img 
+              src="/images/logo.png" 
+              alt="Право (риски)" 
+              className="w-10 h-10 object-contain"
+              style={{ 
+                transform: 'scale(2)'
+              }}
+            />
+          </Link>
+          <nav className="hidden md:flex flex-1 justify-center items-center gap-8">
+            <Link href="#product" className="text-gray-300 hover:text-white transition-colors">Продукт</Link>
+            <Link href="#capabilities" className="text-gray-300 hover:text-white transition-colors">Возможности</Link>
+            <Link href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">Как работает</Link>
+            <Link href="#faq" className="text-gray-300 hover:text-white transition-colors">FAQ</Link>
+          </nav>
           <Button 
-            size="sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium"
             onClick={() => {
               document.getElementById('early-access-form')?.scrollIntoView({ 
                 behavior: 'smooth',
@@ -179,37 +288,46 @@ export default function Page() {
               });
             }}
           >
-            Sign Up
+            Записаться на интервью
           </Button>
-        </nav>
+        </div>
       </header>
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="py-20 px-6 relative">
-          <div className="hero-glow" />
-          <div className="max-w-[1200px] mx-auto text-center relative z-10">
-            {/* Logo Placeholder */}
-            <div className="mb-4">
-              <img 
-                src="/images/idevibelogo.png" 
-                alt="VibeDev Logo" 
-                className="w-36 h-36 mx-auto object-contain"
-              />
+        <section className="min-h-screen flex items-center justify-center py-20 px-6 relative">
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-blue-800/10" />
+            <div className="absolute top-20 left-20 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl" />
+            <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-800/20 rounded-full blur-3xl" />
+          </div>
+          <div className="max-w-6xl mx-auto text-center relative z-10">
+            <div className="mb-8 fade-in">
+              <div className="inline-flex items-center gap-2 bg-gray-900/80 border border-blue-600/50 rounded-full px-4 py-2 mb-8">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                <span className="text-blue-400 text-sm font-medium">Революция в управлении рисками</span>
+              </div>
+              
+              <h1 className={`text-5xl md:text-7xl font-bold mb-8 ${manrope.className}`}>
+                <span className="text-white">
+                  Все корпоративные риски
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">
+                  в одной системе
+                </span>
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+                <strong className="text-white">Право (риски)</strong> объединяет все корпоративные риски в одной системе, 
+                формирует AI-план действий и превращает решения в задачи с ответственными
+              </p>
             </div>
-            <div className="inline-flex items-center px-6 py-2 text-base font-medium text-purple-400 mb-8 glimmer-pill fade-in bg-purple-500/10 border border-purple-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-              <span className={playfair.className}>A Software Composer app</span>
-            </div>
-            <h1 className={`text-4xl md:text-5xl font-medium mb-6 tracking-tight fade-in delay-1 ${playfair.className}`}>
-              The Easiest Way To<br />Vibe Code With Cursor
-            </h1>
-            <p className="text-lg text-neutral-400 mb-8 fade-in delay-2">
-              VibeDev is your IDE for Vibe Coding
-            </p>
-            <div className="fade-in delay-3">
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 fade-in delay-1">
               <Button 
-                size="lg" 
-                className="rounded-full"
+                size="lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg"
                 onClick={() => {
                   document.getElementById('early-access-form')?.scrollIntoView({ 
                     behavior: 'smooth',
@@ -217,112 +335,227 @@ export default function Page() {
                   });
                 }}
               >
-                Get Early Access
+                Записаться на интервью
+                <ArrowRightIcon className="w-5 h-5 ml-2" />
+              </Button>
+              
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white px-8 py-4 rounded-lg font-semibold text-lg"
+                onClick={() => {
+                  document.getElementById('product')?.scrollIntoView({ 
+                    behavior: 'smooth'
+                  });
+                }}
+              >
+                <PlayIcon className="w-5 h-5 mr-2" />
+                Посмотреть демо
               </Button>
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto fade-in delay-2">
+              <div className="text-center p-6 border border-gray-800/50 rounded-lg bg-gray-900/20 backdrop-blur-md outline-none transition-all duration-300 hover:scale-105 hover:bg-gray-900/30 hover:backdrop-blur-lg hover:border-blue-600">
+                <div className="text-3xl font-bold text-blue-500 mb-2">4-6 недель</div>
+                <div className="text-gray-400">MVP-запуск</div>
+              </div>
+              <div className="text-center p-6 border border-gray-800/50 rounded-lg bg-gray-900/20 backdrop-blur-md outline-none transition-all duration-300 hover:scale-105 hover:bg-gray-900/30 hover:backdrop-blur-lg hover:border-blue-600">
+                <div className="text-3xl font-bold text-blue-500 mb-2">AI-powered</div>
+                <div className="text-gray-400">Анализ рисков</div>
+              </div>
+              <div className="text-center p-6 border border-gray-800/50 rounded-lg bg-gray-900/20 backdrop-blur-md outline-none transition-all duration-300 hover:scale-105 hover:bg-gray-900/30 hover:backdrop-blur-lg hover:border-blue-600">
+                <div className="text-3xl font-bold text-blue-500 mb-2">100%</div>
+                <div className="text-gray-400">Автоматизация</div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Demo Section */}
-        <section className="py-20 px-6">
-          <div className="max-w-[1200px] mx-auto scroll-animation">
-            <div className="glimmer-card">
-              <div className="bg-neutral-900">
-                <div className="flex flex-col md:flex-row h-auto md:h-[600px]">
-                  {/* Input Section */}
-                  <div className="w-full md:w-1/2 md:border-r border-neutral-800 p-6 flex flex-col">
-                    <div className="mb-6">
-                      <label className="block text-sm font-medium text-neutral-400 mb-2">What should Cursor do?</label>
+        {/* Problem → Solution Section */}
+        <section className="py-20 px-6 bg-gradient-to-br from-gray-900/80 via-gray-900/50 to-gray-800/30 relative overflow-hidden">
+          {/* Background Effects */}
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-900/20 to-transparent" />
+          </div>
+          
+          <div className="max-w-7xl mx-auto relative z-10">
+            {/* Section Header */}
+            <div className="text-center mb-20 scroll-animation">
+              <h2 className={`text-4xl md:text-6xl font-bold mb-6 ${manrope.className}`}>
+                <span className="text-red-400">Проблема</span>
+                <span className="text-gray-400 mx-4">→</span>
+                <span className="bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">Решение</span>
+              </h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                От хаоса разрозненных систем к единой AI-платформе управления рисками
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
+              {/* Problem Side */}
+              <div className="scroll-animation">
+                <div className="relative h-full">
+                  {/* Problem Card */}
+                  <div className="bg-gradient-to-br from-red-900/20 to-red-800/10 border border-red-500/30 rounded-2xl p-8 backdrop-blur-sm hover:border-red-500/50 transition-all duration-500 group h-full flex flex-col">
+                    {/* Header */}
+                    <div className="flex items-center gap-4 mb-8">
                       <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="Describe what you want to build..."
-                          className="w-full px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500/30"
-                        />
-                        <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-green-500/10 rounded-lg text-green-400 hover:bg-green-500/20 transition-colors">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M22 2L11 13"/>
-                            <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
-                          </svg>
-                        </button>
+                        <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/25">
+                          <AlertTriangleIcon className="w-8 h-8 text-white" />
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className={`text-3xl font-bold text-red-400 ${manrope.className}`}>Проблема</h3>
+                        <p className="text-red-300/70 text-sm">Текущее состояние</p>
                       </div>
                     </div>
-                    
-                    <div>
-                      <h3 className="text-sm font-medium text-neutral-400 mb-4">Start from</h3>
-                      <div className="grid grid-cols-1 gap-3">
-                        {[...Array(2)].map((_, i) => (
-                          <button
-                            key={i}
-                            className="flex items-center gap-3 p-4 bg-neutral-800/50 rounded-lg hover:bg-neutral-800 transition-colors text-left group"
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-green-500/10 text-green-400 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-                              </svg>
-                            </div>
-                            <span className="text-sm font-medium">Template {i + 1}</span>
-                          </button>
-                        ))}
+
+                    {/* Problem Points */}
+                    <div className="space-y-6 flex-grow">
+                      {[
+                        {
+                          title: "Риски разбросаны по системам",
+                          description: "Excel, Jira, email, документы — нет единой картины",
+                          icon: <BarChart3Icon className="w-6 h-6 text-white" />
+                        },
+                        {
+                          title: "Ручная работа",
+                          description: "Сбор данных, оценка, планирование занимают недели",
+                          icon: <ClockIcon className="w-6 h-6 text-white" />
+                        },
+                        {
+                          title: "Нет исполнения",
+                          description: "Планы остаются планами, нет контроля выполнения",
+                          icon: <AlertTriangleIcon className="w-6 h-6 text-white" />
+                        },
+                        {
+                          title: "Реактивность",
+                          description: "Узнаём о проблемах постфактум, когда ущерб уже нанесён",
+                          icon: <ZapIcon className="w-6 h-6 text-white" />
+                        }
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-start gap-4 group/item">
+                          <div className="mt-1 group-hover/item:scale-110 transition-transform duration-300">
+                            {item.icon}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-lg font-semibold text-white mb-2 group-hover/item:text-red-300 transition-colors">
+                              {item.title}
+                            </h4>
+                            <p className="text-gray-300 leading-relaxed">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Problem Stats */}
+                    <div className="mt-8 pt-6 border-t border-red-500/20">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-red-400">90%</div>
+                          <div className="text-xs text-red-300/70">рисков в Excel</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-red-400">4-6 недель</div>
+                          <div className="text-xs text-red-300/70">на анализ</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Solution Side */}
+              <div className="scroll-animation scroll-delay-1">
+                <div className="relative h-full">
+                  {/* Solution Card */}
+                  <div className="bg-gradient-to-br from-blue-900/20 to-blue-800/10 border border-blue-500/30 rounded-2xl p-8 backdrop-blur-sm hover:border-blue-500/50 transition-all duration-500 group h-full flex flex-col">
+                    {/* Header */}
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="relative">
+                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25">
+                          <CheckIcon className="w-8 h-8 text-white" />
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className={`text-3xl font-bold text-blue-400 ${manrope.className}`}>Решение</h3>
+                        <p className="text-blue-300/70 text-sm">Право (риски)</p>
+                      </div>
+                    </div>
+
+                    {/* Solution Points */}
+                    <div className="space-y-6 flex-grow">
+                      {[
+                        {
+                          title: "Единая система",
+                          description: "Все риски в одном месте с автоматической синхронизацией",
+                          icon: <TargetIcon className="w-6 h-6 text-white" />
+                        },
+                        {
+                          title: "AI-автоматизация",
+                          description: "Выявление, оценка и планирование за минуты, не недели",
+                          icon: <BrainCircuitIcon className="w-6 h-6 text-white" />
+                        },
+                        {
+                          title: "Исполнение",
+                          description: "Автоматическое создание задач с ответственными и дедлайнами",
+                          icon: <CheckIcon className="w-6 h-6 text-white" />
+                        },
+                        {
+                          title: "Проактивность",
+                          description: "Предупреждение рисков до их материализации",
+                          icon: <ShieldCheckIcon className="w-6 h-6 text-white" />
+                        }
+                      ].map((item, index) => (
+                        <div key={index} className="flex items-start gap-4 group/item">
+                          <div className="mt-1 group-hover/item:scale-110 transition-transform duration-300">
+                            {item.icon}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-lg font-semibold text-white mb-2 group-hover/item:text-blue-300 transition-colors">
+                              {item.title}
+                            </h4>
+                            <p className="text-gray-300 leading-relaxed">
+                              {item.description}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Solution Stats */}
+                    <div className="mt-8 pt-6 border-t border-blue-500/20">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-blue-400">15 мин</div>
+                          <div className="text-xs text-blue-300/70">полный анализ</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-blue-400">100%</div>
+                          <div className="text-xs text-blue-300/70">автоматизация</div>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Cursor Composer Section - Hidden on mobile */}
-                  <div className="hidden md:flex md:w-1/2 md:flex-col">
-                    <div className="p-4 border-b border-neutral-800">
-                      <h2 className="text-lg font-medium">Cursor Composer</h2>
-                    </div>
-                    <div className="flex-1 p-4 overflow-y-auto space-y-4">
-                      {/* First Message */}
-                      <div className="flex justify-end">
-                        <div className="max-w-[85%] p-4 bg-neutral-800 rounded-lg">
-                          <p className="text-sm text-neutral-300 text-right">
-                            Sure, I can make those changes for you.
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Status Updates */}
-                      <div className="flex flex-col gap-2">
-                        <div className="self-end max-w-[85%] p-3 bg-neutral-800 rounded-lg">
-                          <p className="text-sm font-medium text-green-400 text-right">File generated</p>
-                        </div>
-                        <div className="self-end max-w-[85%] p-3 bg-neutral-800 rounded-lg">
-                          <p className="text-sm font-medium text-green-400 text-right">File generated</p>
-                        </div>
-                        <div className="self-end max-w-[85%] p-3 bg-neutral-800 rounded-lg">
-                          <p className="text-sm font-medium text-green-400 text-right">File generated</p>
-                        </div>
-                        <div className="self-end max-w-[85%] p-3 bg-neutral-800 rounded-lg">
-                          <p className="text-sm font-medium text-green-400 text-right">File generated</p>
-                        </div>
-                      </div>
-
-                      {/* Completion Message */}
-                      <div className="flex justify-end">
-                        <div className="max-w-[85%] p-4 bg-neutral-800 rounded-lg">
-                          <p className="text-sm text-neutral-300 text-right">
-                            I&apos;ve successfully created your app
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-4 border-t border-neutral-800">
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="Type your message..."
-                          className="w-full px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500/30"
-                        />
-                        <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-green-500/10 rounded-lg text-green-400 hover:bg-green-500/20 transition-colors">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path d="M22 2L11 13"/>
-                            <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
-                          </svg>
-                        </button>
-                      </div>
-                    </div>
+                  {/* Floating CTA */}
+                  <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
+                    <Button 
+                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-full font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105"
+                      onClick={() => {
+                        document.getElementById('early-access-form')?.scrollIntoView({ 
+                          behavior: 'smooth',
+                          block: 'center'
+                        });
+                      }}
+                    >
+                      Попробовать решение
+                      <ArrowRightIcon className="w-4 h-4 ml-2" />
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -330,112 +563,364 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Features Section */}
-        <section className="py-20 px-6 border-t border-neutral-800">
-          <div className="max-w-[1200px] mx-auto">
+        {/* Capabilities Section */}
+        <CapabilitiesSection />
+
+        {/* Product Tour Section */}
+        <section id="product" className="py-20 px-6 bg-gray-900/50">
+          <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-medium mb-3 ${playfair.className}`}>Create in Minutes, Not Months</h2>
-              <p className="text-neutral-400 text-lg">Transform your ideas into reality with three simple prompts.</p>
+              <h2 className={`text-4xl md:text-5xl font-bold mb-6 text-white ${manrope.className}`}>
+                Тур по продукту
+              </h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                Посмотрите, как выглядит современное управление рисками
+              </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 relative">
-              <div className="bg-neutral-900 p-8 rounded-xl border border-neutral-800/80 hover:border-green-500/20 transition-colors scroll-animation scroll-delay-1 group">
-                <div className="w-12 h-12 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                    <polyline points="7 10 12 15 17 10"/>
-                    <line x1="12" y1="15" x2="12" y2="3"/>
-                  </svg>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="scroll-animation">
+                <div className="bg-gray-900/80 rounded-lg p-8 border border-gray-700">
+                  <div className="aspect-video bg-gray-800/50 rounded-lg mb-6 flex items-center justify-center">
+                    <div className="text-center">
+                      <PlayIcon className="w-16 h-16 text-blue-500 mx-auto mb-4" />
+                      <p className="text-gray-300">Интерактивное демо</p>
+                    </div>
+                  </div>
+                  <h3 className={`text-2xl font-semibold mb-4 text-white ${manrope.className}`}>
+                    {productSlides[activeSlide].title}
+                  </h3>
+                  <p className="text-gray-300 mb-6">
+                    {productSlides[activeSlide].description}
+                  </p>
+                  <div className="flex gap-2">
+                    {productSlides.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`w-3 h-3 rounded-full transition-colors ${
+                          index === activeSlide ? 'bg-blue-500' : 'bg-gray-600'
+                        }`}
+                        onClick={() => setActiveSlide(index)}
+                      />
+                    ))}
+                  </div>
                 </div>
-                <h3 className={`text-xl font-medium mb-3 group-hover:text-green-400 transition-colors ${playfair.className}`}>Download Template</h3>
-                <p className="text-neutral-400 leading-relaxed">
-                  Get started with our production-ready template. It&apos;s packed with everything you need to build a stunning landing page.
-                </p>
               </div>
 
-              <div className="bg-neutral-900 p-8 rounded-xl border border-neutral-800/80 hover:border-green-500/20 transition-colors scroll-animation scroll-delay-2 group">
-                <div className="w-12 h-12 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4z"/>
-                  </svg>
-                </div>
-                <h3 className={`text-xl font-medium mb-3 group-hover:text-green-400 transition-colors ${playfair.className}`}>Tell VibeDev What You Want</h3>
-                <p className="text-neutral-400 leading-relaxed">
-                  Describe your vision in plain English. VibeDev will control Cursor to transform your words into a beautiful, functional design.
-                </p>
-              </div>
-
-              <div className="bg-neutral-900 p-8 rounded-xl border border-neutral-800/80 hover:border-green-500/20 transition-colors scroll-animation scroll-delay-3 group">
-                <div className="w-12 h-12 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
-                  </svg>
-                </div>
-                <h3 className={`text-xl font-medium mb-3 group-hover:text-green-400 transition-colors ${playfair.className}`}>Deploy to Vercel</h3>
-                <p className="text-neutral-400 leading-relaxed">
-                  Deploy your landing page to Vercel with one click. Share your creation with the world instantly on a global edge network.
-                </p>
+              <div className="space-y-6 scroll-animation scroll-delay-1">
+                {productSlides.map((slide, index) => (
+                  <div 
+                    key={index}
+                    className={`p-4 rounded-lg border transition-all cursor-pointer ${
+                      index === activeSlide 
+                        ? 'border-blue-600 bg-gray-900/50' 
+                        : 'border-gray-800 hover:border-gray-700'
+                    }`}
+                    onClick={() => setActiveSlide(index)}
+                  >
+                    <h4 className="font-semibold mb-2 text-white">{slide.title}</h4>
+                    <p className="text-gray-400 text-sm">{slide.description}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Early Access Form Section */}
-        <section id="early-access-form" className="py-20 px-6 border-t border-neutral-800 bg-neutral-900/80">
-          <div className="max-w-[1200px] mx-auto text-center">
-            <div className="scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-medium mb-4 ${playfair.className}`}>Get Early Access</h2>
-              <p className="text-neutral-400 mb-12">Be the first to experience the future of coding.</p>
+        {/* Target Audience Section */}
+        <section className="py-20 px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16 scroll-animation">
+              <h2 className={`text-4xl md:text-5xl font-bold mb-6 text-white ${manrope.className}`}>
+                Для кого
+              </h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                Руководители крупных компаний, отвечающие за управление рисками
+              </p>
             </div>
-            <div className="max-w-[400px] mx-auto scroll-animation">
-              <iframe 
-                data-tally-src="https://tally.so/embed/wM756p?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-                loading="lazy" 
-                width="100%" 
-                height="230" 
-                frameBorder="0" 
-                title="Sign Up for Early Access"
-              ></iframe>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {targetAudience.map((audience, index) => (
+                <div 
+                  key={index}
+                  className={`border border-gray-800 rounded-lg p-6 text-center hover:border-blue-600 transition-colors bg-gray-900/30 scroll-animation scroll-delay-${(index % 4) + 1}`}
+                >
+                  <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <UsersIcon className="w-8 h-8 text-blue-500" />
+                  </div>
+                  <h3 className={`text-lg font-semibold mb-2 text-white ${manrope.className}`}>
+                    {audience.role}
+                  </h3>
+                  <p className="text-gray-400 text-sm">
+                    {audience.description}
+                  </p>
+                </div>
+              ))}
             </div>
+          </div>
+        </section>
+
+        {/* How It Works Section */}
+        <section id="how-it-works" className="py-20 px-6 bg-gray-900/50 relative overflow-hidden">
+          {/* Background decoration */}
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl" />
+          </div>
+          
+          <div className="max-w-6xl mx-auto relative z-10">
+            <div className="text-center mb-16 scroll-animation">
+              <h2 className={`text-4xl md:text-5xl font-bold mb-6 text-red-500 ${manrope.className}`}>
+                Как это работает
+              </h2>
+              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+                Четыре простых шага от выявления риска до его митигации
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+              {/* Connection lines for desktop */}
+              <div className="hidden lg:block absolute top-24 left-0 right-0 h-0.5">
+                <div className="flex justify-between items-center h-full max-w-5xl mx-auto px-8">
+                  <div className="flex-1 h-0.5 bg-gradient-to-r from-blue-500/50 to-purple-500/50 animate-pulse" />
+                  <div className="flex-1 h-0.5 bg-gradient-to-r from-purple-500/50 to-green-500/50 animate-pulse" style={{animationDelay: '0.5s'}} />
+                  <div className="flex-1 h-0.5 bg-gradient-to-r from-green-500/50 to-orange-500/50 animate-pulse" style={{animationDelay: '1s'}} />
+                </div>
+              </div>
+
+              {workflowSteps.map((step, index) => (
+                <div 
+                  key={index}
+                  className={`text-center scroll-animation scroll-delay-${index + 1} group`}
+                >
+                  <div className="relative mb-6">
+                    {/* Main circle with icon */}
+                    <div className={`w-20 h-20 ${step.bgColor} border-2 border-gray-700 rounded-full flex items-center justify-center mx-auto mb-4 relative overflow-hidden group-hover:border-transparent transition-all duration-500 group-hover:scale-110 group-hover:shadow-2xl`}>
+                      {/* Gradient border on hover */}
+                      <div className={`absolute inset-0 bg-gradient-to-r ${step.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full`} />
+                      <div className="absolute inset-0.5 bg-gray-900 rounded-full" />
+                      
+                      {/* Step number */}
+                      <div className="absolute top-2 right-2 w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center z-10">
+                        <span className="text-xs font-bold text-gray-400 group-hover:text-white transition-colors duration-300">{step.step}</span>
+                      </div>
+                      
+                      {/* Icon */}
+                      <div className={`text-gray-400 group-hover:text-white transition-all duration-500 z-10 group-hover:scale-110`}>
+                        {step.icon}
+                      </div>
+                      
+                      {/* Glow effect */}
+                      <div className={`absolute inset-0 bg-gradient-to-r ${step.color} opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-full blur-xl`} />
+                    </div>
+                  </div>
+                  
+                  <h3 className={`text-xl font-semibold mb-3 text-white group-hover:bg-gradient-to-r group-hover:${step.color} group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500 ${manrope.className}`}>
+                    {step.title}
+                  </h3>
+                  <p className="text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
+                    {step.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section id="faq" className="py-20 px-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16 scroll-animation">
+              <h2 className={`text-4xl md:text-5xl font-bold mb-6 text-white ${manrope.className}`}>
+                Часто задаваемые вопросы
+              </h2>
+              <p className="text-xl text-gray-300">
+                Ответы на основные вопросы о платформе
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {faqItems.map((item, index) => (
+                <div 
+                  key={index}
+                  className={`border border-gray-800 rounded-lg overflow-hidden scroll-animation scroll-delay-${(index % 3) + 1}`}
+                >
+                  <button
+                    className="w-full p-6 text-left hover:bg-gray-900/50 transition-colors flex justify-between items-center"
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  >
+                    <span className="font-semibold text-white">{item.question}</span>
+                    <ChevronDownIcon 
+                      className={`w-5 h-5 text-gray-400 transition-transform ${
+                        openFaq === index ? 'rotate-180' : ''
+                      }`} 
+                    />
+                  </button>
+                  {openFaq === index && (
+                    <div className="px-6 pb-6">
+                      <p className="text-gray-300">{item.answer}</p>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Early Access Form */}
+        <section id="early-access-form" className="py-20 px-6 bg-gray-900/50">
+          <div className="max-w-2xl mx-auto">
+            <div className="text-center mb-12 scroll-animation">
+              <h2 className={`text-4xl md:text-5xl font-bold mb-6 text-white ${manrope.className}`}>
+                Записаться на интервью
+              </h2>
+              <p className="text-xl text-gray-300">
+                Получите персональную демонстрацию и early access к платформе
+              </p>
+            </div>
+
+            <form onSubmit={handleFormSubmit} className="space-y-6 scroll-animation scroll-delay-1">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Имя *
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                    placeholder="Ваше имя"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                    placeholder="your@email.com"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Компания *
+                  </label>
+                  <input
+                    type="text"
+                    name="company"
+                    required
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                    placeholder="Название компании"
+                    value={formData.company}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Должность *
+                  </label>
+                  <input
+                    type="text"
+                    name="position"
+                    required
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                    placeholder="Ваша должность"
+                    value={formData.position}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Телефон
+                </label>
+                <input
+                  type="tel"
+                  name="phone"
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+                  placeholder="+7 (999) 123-45-67"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <Button 
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-lg font-semibold text-lg"
+              >
+                Записаться на интервью
+                <ArrowRightIcon className="w-5 h-5 ml-2" />
+              </Button>
+
+              <p className="text-sm text-gray-400 text-center">
+                Мы свяжемся с вами в течение 24 часов для согласования времени интервью
+              </p>
+            </form>
           </div>
         </section>
       </main>
 
-      <footer className="py-8 px-6 border-t border-neutral-800/50 scroll-animation">
-        <div className="max-w-[1200px] mx-auto flex items-center justify-between">
-          <div className="text-sm text-neutral-400">
-            © 2024 Software Composer LP. All rights reserved.
+      {/* Footer */}
+      <footer className="bg-gray-900 border-t border-gray-800 py-12 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="md:col-span-2">
+              <Link href="/" className={`flex items-center gap-3 mb-4 ${manrope.className}`}>
+                <img 
+                  src="/images/logo.png" 
+                  alt="Право (риски)" 
+                  className="w-10 h-10 object-contain scale-150"
+                />
+                <span className="text-xl font-bold text-white">Право (риски)</span>
+              </Link>
+              <p className="text-gray-400 mb-4 max-w-md">
+                AI-платформа для комплексного управления корпоративными рисками. 
+                Превращаем хаос в систему, реактивность в проактивность.
+              </p>
+              <div className="flex gap-4">
+                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors cursor-pointer">
+                  <GlobeIcon className="w-5 h-5 text-gray-400" />
+                </div>
+                <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-gray-700 transition-colors cursor-pointer">
+                  <FileTextIcon className="w-5 h-5 text-gray-400" />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-white mb-4">Продукт</h3>
+              <ul className="space-y-2">
+                <li><Link href="#capabilities" className="text-gray-400 hover:text-white transition-colors">Возможности</Link></li>
+                <li><Link href="#how-it-works" className="text-gray-400 hover:text-white transition-colors">Как работает</Link></li>
+                <li><Link href="#faq" className="text-gray-400 hover:text-white transition-colors">FAQ</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold text-white mb-4">Контакты</h3>
+              <ul className="space-y-2">
+                <li className="text-gray-400">hello@pravorisk.ai</li>
+                <li className="text-gray-400">+7 (495) 123-45-67</li>
+              </ul>
+            </div>
           </div>
-          <div className="flex items-center gap-6">
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
-              <span className="sr-only">Twitter</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
-              </svg>
-            </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
-              <span className="sr-only">GitHub</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-              </svg>
-            </a>
-            <a href="https://discord.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
-              <span className="sr-only">Discord</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 6h0a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-7a3 3 0 0 1-3-3v0"/>
-                <path d="M6 18v-7a3 3 0 0 1 3-3h7"/>
-                <circle cx="8" cy="12" r="1"/>
-                <circle cx="16" cy="12" r="1"/>
-              </svg>
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-neutral-400 hover:text-white transition-colors">
-              <span className="sr-only">LinkedIn</span>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                <rect x="2" y="9" width="4" height="12"/>
-                <circle cx="4" cy="4" r="2"/>
-              </svg>
-            </a>
+
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center">
+            <p className="text-gray-400">
+              © 2024 Право (риски). Все права защищены.
+            </p>
           </div>
         </div>
       </footer>
