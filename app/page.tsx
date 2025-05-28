@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { Inter, Manrope } from 'next/font/google'
 import CapabilitiesSection from "@/components/sections/CapabilitiesSection"
+import ProductTourSection from "@/components/sections/ProductTourSection"
 import { 
   ChevronDownIcon, 
   CheckIcon, 
@@ -38,7 +39,6 @@ const manrope = Manrope({
 })
 
 export default function Page() {
-  const [activeSlide, setActiveSlide] = useState(0)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [formData, setFormData] = useState({
     name: '',
@@ -48,34 +48,6 @@ export default function Page() {
     phone: ''
   })
   const observerRef = useRef<IntersectionObserver | null>(null)
-
-  const productSlides = [
-    {
-      title: "Дашборд CEO",
-      description: "Индекс риска, ущерб ₽, матрица критичности",
-      image: "/images/dashboard-ceo.png"
-    },
-    {
-      title: "Kanban-реестр",
-      description: "Карточки рисков с вероятностью и ущербом",
-      image: "/images/kanban-registry.png"
-    },
-    {
-      title: "Митигация",
-      description: "Выберите стратегию → получите чек-лист",
-      image: "/images/mitigation.png"
-    },
-    {
-      title: "Контракты",
-      description: "ИИ извлекает обязательства из DOCX/PDF",
-      image: "/images/contracts.png"
-    },
-    {
-      title: "Аналитика & отчёты",
-      description: "Срезы по отделам, срокам, стадиям",
-      image: "/images/analytics.png"
-    }
-  ]
 
   const capabilities = [
     {
@@ -200,13 +172,6 @@ export default function Page() {
 
     return () => observerRef.current?.disconnect();
   }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % productSlides.length)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [])
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -567,65 +532,7 @@ export default function Page() {
         <CapabilitiesSection />
 
         {/* Product Tour Section */}
-        <section id="product" className="py-20 px-6 bg-gray-900/50">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16 scroll-animation">
-              <h2 className={`text-4xl md:text-5xl font-bold mb-6 text-white ${manrope.className}`}>
-                Тур по продукту
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Посмотрите, как выглядит современное управление рисками
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="scroll-animation">
-                <div className="bg-gray-900/80 rounded-lg p-8 border border-gray-700">
-                  <div className="aspect-video bg-gray-800/50 rounded-lg mb-6 flex items-center justify-center">
-                    <div className="text-center">
-                      <PlayIcon className="w-16 h-16 text-blue-500 mx-auto mb-4" />
-                      <p className="text-gray-300">Интерактивное демо</p>
-                    </div>
-                  </div>
-                  <h3 className={`text-2xl font-semibold mb-4 text-white ${manrope.className}`}>
-                    {productSlides[activeSlide].title}
-                  </h3>
-                  <p className="text-gray-300 mb-6">
-                    {productSlides[activeSlide].description}
-                  </p>
-                  <div className="flex gap-2">
-                    {productSlides.map((_, index) => (
-                      <button
-                        key={index}
-                        className={`w-3 h-3 rounded-full transition-colors ${
-                          index === activeSlide ? 'bg-blue-500' : 'bg-gray-600'
-                        }`}
-                        onClick={() => setActiveSlide(index)}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-6 scroll-animation scroll-delay-1">
-                {productSlides.map((slide, index) => (
-                  <div 
-                    key={index}
-                    className={`p-4 rounded-lg border transition-all cursor-pointer ${
-                      index === activeSlide 
-                        ? 'border-blue-600 bg-gray-900/50' 
-                        : 'border-gray-800 hover:border-gray-700'
-                    }`}
-                    onClick={() => setActiveSlide(index)}
-                  >
-                    <h4 className="font-semibold mb-2 text-white">{slide.title}</h4>
-                    <p className="text-gray-400 text-sm">{slide.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+        <ProductTourSection />
 
         {/* Target Audience Section */}
         <section className="py-20 px-6">
