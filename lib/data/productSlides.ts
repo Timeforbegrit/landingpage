@@ -4,26 +4,26 @@ export const productSlides: ProductSlide[] = [
   {
     title: "Дашборд CEO",
     description: "Индекс риска, ущерб ₽, матрица критичности",
-    image: "/images/dashboard-ceo.png"
+    image: "/gifs/Для сайта дашборд CEO.gif"
   },
   {
     title: "Kanban-реестр",
     description: "Карточки рисков с вероятностью и ущербом",
-    image: "/images/kanban-registry.png"
+    image: "/gifs/Kanban рисков для  сайта.gif"
   },
   {
     title: "Митигация",
     description: "Выберите стратегию → получите чек-лист",
-    image: "/images/mitigation.png"
+    image: "/gifs/Митигация риска для сайта .gif"
   },
   {
     title: "Контракты",
     description: "ИИ извлекает обязательства из DOCX/PDF",
-    image: "/images/contracts.png"
+    image: "/gifs/Контракты и обязательства .gif"
   },
   {
     title: "Аналитика & отчёты",
     description: "Срезы по отделам, срокам, стадиям",
-    image: "/images/analytics.png"
+    image: "/gifs/Отчеты для сайта.gif"
   }
 ] 
