@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { ArrowRightIcon } from 'lucide-react'
+import { ArrowRightIcon, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { Manrope } from 'next/font/google'
 import { FormData } from '@/lib/types'
 
@@ -15,12 +15,18 @@ interface ContactFormSectionProps {
   formData: FormData
   onFormSubmit: (e: React.FormEvent) => void
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  isSubmitting?: boolean
+  submitMessage?: string
+  submitError?: string[]
 }
 
 export default function ContactFormSection({ 
   formData, 
   onFormSubmit, 
-  onInputChange 
+  onInputChange,
+  isSubmitting = false,
+  submitMessage = '',
+  submitError = []
 }: ContactFormSectionProps) {
   return (
     <section id="early-access-form" className="py-20 px-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
@@ -41,6 +47,28 @@ export default function ContactFormSection({
           </p>
         </div>
 
+        {/* Status Messages */}
+        {submitMessage && (
+          <div className="mb-6 p-4 bg-green-900/20 border border-green-500/30 rounded-lg flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+            <p className="text-green-400">{submitMessage}</p>
+          </div>
+        )}
+
+        {submitError.length > 0 && (
+          <div className="mb-6 p-4 bg-red-900/20 border border-red-500/30 rounded-lg">
+            <div className="flex items-center gap-3 mb-2">
+              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
+              <p className="text-red-400 font-medium">Ошибки валидации:</p>
+            </div>
+            <ul className="list-disc list-inside text-red-300 space-y-1 ml-8">
+              {submitError.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <form onSubmit={onFormSubmit} className="space-y-6 scroll-animation scroll-delay-1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -51,7 +79,8 @@ export default function ContactFormSection({
                 type="text"
                 name="name"
                 required
-                className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25"
+                disabled={isSubmitting}
+                className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="Ваше имя"
                 value={formData.name}
                 onChange={onInputChange}
@@ -65,7 +94,8 @@ export default function ContactFormSection({
                 type="email"
                 name="email"
                 required
-                className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25"
+                disabled={isSubmitting}
+                className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="your@email.com"
                 value={formData.email}
                 onChange={onInputChange}
@@ -82,7 +112,8 @@ export default function ContactFormSection({
                 type="text"
                 name="company"
                 required
-                className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25"
+                disabled={isSubmitting}
+                className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="Название компании"
                 value={formData.company}
                 onChange={onInputChange}
@@ -95,7 +126,8 @@ export default function ContactFormSection({
               <input
                 type="text"
                 name="position"
-                className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25"
+                disabled={isSubmitting}
+                className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
                 placeholder="Ваша должность"
                 value={formData.position}
                 onChange={onInputChange}
@@ -111,7 +143,8 @@ export default function ContactFormSection({
               type="tel"
               name="phone"
               required
-              className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25"
+              disabled={isSubmitting}
+              className="w-full px-4 py-3 bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none transition-all duration-300 focus:shadow-lg focus:shadow-blue-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
               placeholder="+7 (999) 123-45-67"
               value={formData.phone}
               onChange={onInputChange}
@@ -120,9 +153,20 @@ export default function ContactFormSection({
 
           <Button 
             type="submit" 
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+            disabled={isSubmitting}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors"
           >
-            Получить доступ
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Отправка...
+              </>
+            ) : (
+              <>
+                Получить доступ
+                <ArrowRightIcon className="w-4 h-4 ml-2" />
+              </>
+            )}
           </Button>
 
           <p className="text-sm text-gray-400 text-center">

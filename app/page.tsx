@@ -48,6 +48,9 @@ export default function Page() {
     position: '',
     phone: ''
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState<string>('')
+  const [submitError, setSubmitError] = useState<string[]>([])
   const observerRef = useRef<IntersectionObserver | null>(null)
 
   // Функция плавного скролла с учетом высоты header
@@ -80,11 +83,41 @@ export default function Page() {
     return () => observerRef.current?.disconnect();
   }, []);
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Здесь будет логика отправки формы
-    console.log('Form submitted:', formData)
-    alert('Спасибо! Мы свяжемся с вами в ближайшее время.')
+    setIsSubmitting(true)
+    setSubmitMessage('')
+    setSubmitError([])
+
+    try {
+      const response = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+      
+      if (result.success) {
+        setSubmitMessage(result.message || 'Заявка успешно отправлена!')
+        // Очищаем форму при успехе
+        setFormData({
+          name: '',
+          email: '',
+          company: '',
+          position: '',
+          phone: ''
+        })
+      } else {
+        setSubmitError(result.errors || [result.message || 'Произошла ошибка'])
+      }
+    } catch (error) {
+      setSubmitError(['Произошла неожиданная ошибка. Попробуйте еще раз.'])
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,6 +125,10 @@ export default function Page() {
       ...formData,
       [e.target.name]: e.target.value
     })
+    // Очищаем ошибки при изменении полей
+    if (submitError.length > 0) {
+      setSubmitError([])
+    }
   }
 
   return (
@@ -471,6 +508,9 @@ export default function Page() {
           formData={formData}
           onFormSubmit={handleFormSubmit}
           onInputChange={handleInputChange}
+          isSubmitting={isSubmitting}
+          submitMessage={submitMessage}
+          submitError={submitError}
         />
       </main>
 

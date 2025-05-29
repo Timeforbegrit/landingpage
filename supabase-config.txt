@@ -1,0 +1,10 @@
+# Скопируйте эти переменные в ваш .env.local файл:
+
+NEXT_PUBLIC_SUPABASE_URL=https://kfmjqugkczichvlhmdtn.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmbWpxdWdrY3ppY2h2bGhtZHRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg1MTEwNTUsImV4cCI6MjA2NDA4NzA1NX0.ANO2KSYpJQ6I9kgDhQWPzIXXdNLmLGxU-cMSyqIx_Jk
+
+# Email Configuration (if needed)
+# RESEND_API_KEY=your_resend_key
+
+# Admin Configuration  
+ADMIN_EMAIL=admin@pravorisk.ai 
