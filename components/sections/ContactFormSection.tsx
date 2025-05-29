@@ -34,7 +34,7 @@ export default function ContactFormSection({
       <div className="max-w-2xl mx-auto relative z-10">
         <div className="text-center mb-12 scroll-animation">
           <h2 className={`text-4xl md:text-5xl font-bold mb-6 text-white ${manrope.className}`}>
-            Записаться на интервью
+            Получить доступ
           </h2>
           <p className="text-xl text-gray-300">
             Получите персональную демонстрацию и early access к платформе
@@ -119,11 +119,10 @@ export default function ContactFormSection({
           </div>
 
           <Button 
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-4 rounded-lg font-semibold text-lg shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105"
+            type="submit" 
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
           >
-            Записаться на интервью
-            <ArrowRightIcon className="w-5 h-5 ml-2" />
+            Получить доступ
           </Button>
 
           <p className="text-sm text-gray-400 text-center">

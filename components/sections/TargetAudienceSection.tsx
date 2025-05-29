@@ -3,13 +3,51 @@
 import React from 'react'
 import { motion } from 'motion/react'
 import { Manrope } from 'next/font/google'
-import { targetAudience } from '@/lib/data/targetAudience'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
   display: 'swap',
   weight: ['400', '500', '600', '700'],
 })
+
+// Обновленные данные согласно спецификации, но в формате исходного компонента
+const targetAudience = [
+  {
+    role: "Chief Risk Officer",
+    description: "Управление всеми рисками компании",
+    customerJourney: "Я месяцами собирал риски из десятков Excel-файлов и почтовых цепочек. Теперь AI за минуты дает мне полную картину — работаю в 6 раз быстрее!"
+  },
+  {
+    role: "Compliance Officer", 
+    description: "Контроль соответствия требованиям",
+    customerJourney: "Раньше постоянно что-то упускала при проверках. Система сама отслеживает все требования — больше никаких штрафов от регуляторов."
+  },
+  {
+    role: "Legal Director",
+    description: "Управление правовыми рисками",
+    customerJourney: "Юридические риски были разбросаны везде... В переписках, договорах, отчетах. Единая карта экономит мне 4 дня в неделю."
+  },
+  {
+    role: "HR Director",
+    description: "Управление кадровыми рисками",
+    customerJourney: "Увольнения всегда были для меня сюрпризом. Теперь вижу проблемы за 3 месяца и успеваю их решить — текучесть упала вдвое!"
+  },
+  {
+    role: "Chief Security Officer",
+    description: "Информационная безопасность",
+    customerJourney: "Угрозы приходили из 15 разных систем. Я не успевал анализировать. Теперь все в одном дашборде — сплю спокойно."
+  },
+  {
+    role: "CFO",
+    description: "Финансовые риски и планирование",
+    customerJourney: "Финансовые кризисы всегда застигали врасплох... Бюджеты летели. AI-прогнозы дают 95% точность — планирую на год вперед."
+  },
+  {
+    role: "Chief Operating Officer",
+    description: "Операционные риски",
+    customerJourney: "Когда останавливался конвейер, я узнавал последним. Убытки миллионные! Система предупреждает за час — простоев почти нет."
+  }
+]
 
 const AudienceColumn = (props: {
   className?: string;
@@ -72,8 +110,8 @@ export default function TargetAudienceSection() {
   // Разделяем аудиторию на три колонки для лучшей анимации
   const splitAudiences = [
     targetAudience.slice(0, 3),  // CRO, Compliance, Legal
-    targetAudience.slice(3, 5),  // HR, COO
-    targetAudience.slice(5, 7),  // CISO, CFO
+    targetAudience.slice(3, 5),  // HR, CISO
+    targetAudience.slice(5, 7),  // CFO, COO
   ]
 
   return (

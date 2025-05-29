@@ -18,22 +18,22 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
   const problemPoints = [
     {
       title: "Риски разбросаны по системам",
-      description: "Excel, Jira, email, документы — нет единой картины",
+      description: "Excel, Jira, почта — нет единой картины",
       icon: <BarChart3Icon className="w-6 h-6 text-white" />
     },
     {
       title: "Ручная работа",
-      description: "Сбор данных, оценка, планирование занимают недели",
+      description: "Сбор и оценка занимают недели",
       icon: <ClockIcon className="w-6 h-6 text-white" />
     },
     {
       title: "Нет исполнения",
-      description: "Планы остаются планами, нет контроля выполнения",
+      description: "Планы остаются на бумаге",
       icon: <AlertTriangleIcon className="w-6 h-6 text-white" />
     },
     {
       title: "Реактивность",
-      description: "Узнаём о проблемах постфактум, когда ущерб уже нанесён",
+      description: "Узнаём о проблемах постфактум",
       icon: <ZapIcon className="w-6 h-6 text-white" />
     }
   ]
@@ -41,22 +41,22 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
   const solutionPoints = [
     {
       title: "Единая система",
-      description: "Все риски в одном месте с автоматической синхронизацией",
+      description: "Все риски синхронизированы",
       icon: <TargetIcon className="w-6 h-6 text-white" />
     },
     {
       title: "AI-автоматизация",
-      description: "Выявление, оценка и планирование за минуты, не недели",
+      description: "Выявление и планирование за минуты",
       icon: <BrainCircuitIcon className="w-6 h-6 text-white" />
     },
     {
-      title: "Исполнение",
-      description: "Автоматическое создание задач с ответственными и дедлайнами",
+      title: "Исполнение под контролем",
+      description: "Задачи с дедлайнами и RACI создаются автоматически",
       icon: <CheckIcon className="w-6 h-6 text-white" />
     },
     {
       title: "Проактивность",
-      description: "Предупреждение рисков до их материализации",
+      description: "Предупреждаем риски до их реализации",
       icon: <ShieldCheckIcon className="w-6 h-6 text-white" />
     }
   ]
@@ -79,7 +79,7 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
             <span className="bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">Решение</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            От хаоса разрозненных систем к единой AI-платформе управления рисками
+            От Excel-хаоса к единой AI-платформе управления рисками
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
                       <div className="text-xs text-red-300/70">рисков в Excel</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-red-400">4-6 недель</div>
+                      <div className="text-2xl font-bold text-red-400">6 недель</div>
                       <div className="text-xs text-red-300/70">на анализ</div>
                     </div>
                   </div>
@@ -177,12 +177,12 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
                 <div className="mt-8 pt-6 border-t border-blue-500/20">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-400">15 мин</div>
+                      <div className="text-2xl font-bold text-blue-400">AI-модуль</div>
                       <div className="text-xs text-blue-300/70">полный анализ</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-blue-400">100%</div>
-                      <div className="text-xs text-blue-300/70">автоматизация</div>
+                      <div className="text-xs text-blue-300/70">задач зафиксировано</div>
                     </div>
                   </div>
                 </div>
@@ -194,7 +194,7 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
                   className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-full font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105"
                   onClick={onScrollToForm}
                 >
-                  Попробовать решение
+                  Получить доступ
                   <ArrowRightIcon className="w-4 h-4 ml-2" />
                 </Button>
               </div>

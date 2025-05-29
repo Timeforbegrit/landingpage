@@ -38,7 +38,7 @@ export default function Header({ onScrollToForm }: HeaderProps) {
           className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium"
           onClick={onScrollToForm}
         >
-          Записаться на интервью
+          Получить доступ
         </Button>
       </div>
     </header>

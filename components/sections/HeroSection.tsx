@@ -52,7 +52,7 @@ export default function HeroSection({ onScrollToForm, onScrollToProduct }: HeroS
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg"
             onClick={onScrollToForm}
           >
-            Записаться на интервью
+            Получить доступ
             <ArrowRightIcon className="w-5 h-5 ml-2" />
           </Button>
           

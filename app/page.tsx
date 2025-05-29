@@ -50,6 +50,17 @@ export default function Page() {
   })
   const observerRef = useRef<IntersectionObserver | null>(null)
 
+  // Функция плавного скролла с учетом высоты header
+  const smoothScrollTo = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }
+
   useEffect(() => {
     observerRef.current = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -86,6 +97,11 @@ export default function Page() {
   return (
     <div className={`flex flex-col min-h-screen bg-[#10131a] text-white ${inter.className}`}>
       <style jsx global>{`
+        html {
+          scroll-behavior: smooth;
+          scroll-padding-top: 80px;
+        }
+        
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
           to { opacity: 1; transform: translateY(0); }
@@ -140,9 +156,27 @@ export default function Page() {
           
           {/* Center - Navigation */}
           <nav className="hidden md:flex justify-center items-center gap-8">
-            <Link href="#product" className="text-gray-300 hover:text-white transition-colors">Продукт</Link>
-            <Link href="#capabilities" className="text-gray-300 hover:text-white transition-colors">Возможности</Link>
-            <Link href="#faq" className="text-gray-300 hover:text-white transition-colors">FAQ</Link>
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('product'); }} 
+              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
+            >
+              Продукт
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('capabilities'); }} 
+              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
+            >
+              Возможности
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('faq'); }} 
+              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
+            >
+              FAQ
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
           </nav>
           
           {/* Right - CTA Button */}
@@ -150,13 +184,10 @@ export default function Page() {
             <Button 
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium"
               onClick={() => {
-                document.getElementById('early-access-form')?.scrollIntoView({ 
-                  behavior: 'smooth',
-                  block: 'center'
-                });
+                smoothScrollTo('early-access-form');
               }}
             >
-              Записаться на интервью
+              Получить доступ
             </Button>
           </div>
         </div>
@@ -198,13 +229,10 @@ export default function Page() {
                 size="lg"
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg"
                 onClick={() => {
-                  document.getElementById('early-access-form')?.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'center'
-                  });
+                  smoothScrollTo('early-access-form');
                 }}
               >
-                Записаться на интервью
+                Получить доступ
                 <ArrowRightIcon className="w-5 h-5 ml-2" />
               </Button>
               
@@ -213,9 +241,7 @@ export default function Page() {
                 size="lg"
                 className="border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white px-8 py-4 rounded-lg font-semibold text-lg"
                 onClick={() => {
-                  document.getElementById('product')?.scrollIntoView({ 
-                    behavior: 'smooth'
-                  });
+                  smoothScrollTo('product');
                 }}
               >
                 <PlayIcon className="w-5 h-5 mr-2" />
@@ -258,7 +284,7 @@ export default function Page() {
                 <span className="bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">Решение</span>
               </h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                От хаоса разрозненных систем к единой AI-платформе управления рисками
+                От Excel-хаоса к единой AI-платформе управления рисками
               </p>
             </div>
 
@@ -286,22 +312,22 @@ export default function Page() {
                       {[
                         {
                           title: "Риски разбросаны по системам",
-                          description: "Excel, Jira, email, документы — нет единой картины",
+                          description: "Excel, Jira, почта — нет единой картины",
                           icon: <BarChart3Icon className="w-6 h-6 text-white" />
                         },
                         {
                           title: "Ручная работа",
-                          description: "Сбор данных, оценка, планирование занимают недели",
+                          description: "Сбор и оценка занимают недели",
                           icon: <ClockIcon className="w-6 h-6 text-white" />
                         },
                         {
                           title: "Нет исполнения",
-                          description: "Планы остаются планами, нет контроля выполнения",
+                          description: "Планы остаются на бумаге",
                           icon: <AlertTriangleIcon className="w-6 h-6 text-white" />
                         },
                         {
                           title: "Реактивность",
-                          description: "Узнаём о проблемах постфактум, когда ущерб уже нанесён",
+                          description: "Узнаём о проблемах постфактум",
                           icon: <ZapIcon className="w-6 h-6 text-white" />
                         }
                       ].map((item, index) => (
@@ -329,7 +355,7 @@ export default function Page() {
                           <div className="text-xs text-red-300/70">рисков в Excel</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-red-400">4-6 недель</div>
+                          <div className="text-2xl font-bold text-red-400">6 недель</div>
                           <div className="text-xs text-red-300/70">на анализ</div>
                         </div>
                       </div>
@@ -361,22 +387,22 @@ export default function Page() {
                       {[
                         {
                           title: "Единая система",
-                          description: "Все риски в одном месте с автоматической синхронизацией",
+                          description: "Все риски синхронизированы",
                           icon: <TargetIcon className="w-6 h-6 text-white" />
                         },
                         {
                           title: "AI-автоматизация",
-                          description: "Выявление, оценка и планирование за минуты, не недели",
+                          description: "Выявление и планирование за минуты",
                           icon: <BrainCircuitIcon className="w-6 h-6 text-white" />
                         },
                         {
-                          title: "Исполнение",
-                          description: "Автоматическое создание задач с ответственными и дедлайнами",
+                          title: "Исполнение под контролем",
+                          description: "Задачи с дедлайнами и RACI создаются автоматически",
                           icon: <CheckIcon className="w-6 h-6 text-white" />
                         },
                         {
                           title: "Проактивность",
-                          description: "Предупреждение рисков до их материализации",
+                          description: "Предупреждаем риски до их реализации",
                           icon: <ShieldCheckIcon className="w-6 h-6 text-white" />
                         }
                       ].map((item, index) => (
@@ -400,12 +426,12 @@ export default function Page() {
                     <div className="mt-8 pt-6 border-t border-blue-500/20">
                       <div className="grid grid-cols-2 gap-4">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-blue-400">15 мин</div>
+                          <div className="text-2xl font-bold text-blue-400">AI-модуль</div>
                           <div className="text-xs text-blue-300/70">полный анализ</div>
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-blue-400">100%</div>
-                          <div className="text-xs text-blue-300/70">автоматизация</div>
+                          <div className="text-xs text-blue-300/70">задач зафиксировано</div>
                         </div>
                       </div>
                     </div>
@@ -416,14 +442,10 @@ export default function Page() {
                     <Button 
                       className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-full font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105"
                       onClick={() => {
-                        document.getElementById('early-access-form')?.scrollIntoView({ 
-                          behavior: 'smooth',
-                          block: 'center'
-                        });
+                        smoothScrollTo('early-access-form');
                       }}
                     >
-                      Попробовать решение
-                      <ArrowRightIcon className="w-4 h-4 ml-2" />
+                      Получить доступ
                     </Button>
                   </div>
                 </div>
@@ -482,8 +504,22 @@ export default function Page() {
             <div>
               <h3 className="font-semibold text-white mb-4">Продукт</h3>
               <ul className="space-y-2">
-                <li><Link href="#capabilities" className="text-gray-400 hover:text-white transition-colors">Возможности</Link></li>
-                <li><Link href="#faq" className="text-gray-400 hover:text-white transition-colors">FAQ</Link></li>
+                <li>
+                  <button 
+                    onClick={(e) => { e.preventDefault(); smoothScrollTo('capabilities'); }} 
+                    className="text-gray-400 hover:text-white transition-colors cursor-pointer bg-transparent border-none"
+                  >
+                    Возможности
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={(e) => { e.preventDefault(); smoothScrollTo('faq'); }} 
+                    className="text-gray-400 hover:text-white transition-colors cursor-pointer bg-transparent border-none"
+                  >
+                    FAQ
+                  </button>
+                </li>
               </ul>
             </div>
 
