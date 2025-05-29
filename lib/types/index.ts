@@ -13,6 +13,8 @@ export interface Capability {
 export interface TargetAudience {
   role: string
   description: string
+  customerJourney: string
+  image: string
 }
 
 export interface FAQItem {
