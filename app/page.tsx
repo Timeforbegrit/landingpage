@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { Manrope } from 'next/font/google'
 import AdaptiveCapabilitiesSection from "@/components/AdaptiveCapabilitiesSection"
@@ -181,10 +182,12 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <Link href="/" className={`flex items-center gap-3 mb-4 ${manrope.className}`}>
-                <img 
+                <Image 
                   src="/images/logo.png" 
                   alt="Право (риски)" 
-                  className="w-10 h-10 object-contain scale-150"
+                  width={40}
+                  height={40}
+                  className="object-contain scale-150"
                 />
                 <span className="text-xl font-bold text-white">Право (риски)</span>
               </Link>

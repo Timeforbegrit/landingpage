@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { Button } from "@/components/ui/button"
 import { 
   MailIcon, 
@@ -54,7 +54,7 @@ export default function AdminPage() {
     checkAdminSession()
   }, [])
 
-  const loadSubmissions = async () => {
+  const loadSubmissions = useCallback(async () => {
     setLoading(true)
     setError('')
     try {
@@ -85,7 +85,7 @@ export default function AdminPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [statusFilter, searchTerm])
 
   const updateSubmissionStatus = async (id: string, status: string, notes?: string) => {
     try {
@@ -119,7 +119,7 @@ export default function AdminPage() {
     if (demoSession) {
       loadSubmissions()
     }
-  }, [demoSession, statusFilter, searchTerm])
+  }, [demoSession, loadSubmissions])
 
   const formatDate = (timestamp: string) => {
     return new Date(timestamp).toLocaleString('ru-RU', {

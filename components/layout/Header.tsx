@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import Image from "next/image"
 import { Manrope } from 'next/font/google'
 import { MenuIcon, XIcon } from 'lucide-react'
 
@@ -36,10 +37,12 @@ export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) 
           {/* Left - Logo */}
           <div className="flex justify-start">
             <Link href="/" className={`flex items-center gap-3 ${manrope.className}`}>
-              <img 
+              <Image 
                 src="/images/logo.png" 
                 alt="Право (риски)" 
-                className="w-10 h-10 object-contain"
+                width={40}
+                height={40}
+                className="object-contain"
                 style={{ 
                   transform: 'scale(2)'
                 }}
