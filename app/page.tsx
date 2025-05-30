@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
-import { Inter, Manrope } from 'next/font/google'
+import { Manrope } from 'next/font/google'
 import AdaptiveCapabilitiesSection from "@/components/AdaptiveCapabilitiesSection"
 import AdaptiveProductTourSection from "@/components/AdaptiveProductTourSection"
 import AdaptiveProblemSolutionSection from "@/components/AdaptiveProblemSolutionSection"
@@ -31,11 +31,6 @@ import {
 } from 'lucide-react'
 import AdaptiveHeroSection from "@/components/AdaptiveHeroSection"
 import Header from "@/components/layout/Header"
-
-const inter = Inter({
-  subsets: ['latin', 'cyrillic'],
-  display: 'swap',
-})
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -135,7 +130,7 @@ export default function Page() {
   }
 
   return (
-    <div className={`flex flex-col min-h-screen bg-[#10131a] text-white ${inter.className}`}>
+    <div className="flex flex-col min-h-screen bg-[#10131a] text-white font-inter">
       {/* Top Bar */}
       {/* <div className="bg-gray-900 text-white py-3 px-6 text-center text-sm border-b border-gray-800">
         <span className="font-medium">Early Access открыт. Записывайтесь на UX-интервью и получите доступ к beta-версии</span>
