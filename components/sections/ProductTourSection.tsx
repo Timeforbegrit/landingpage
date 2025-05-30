@@ -264,7 +264,7 @@ export default function ProductTourSection() {
                       }`}
                       priority={activeSlide === 0}
                       unoptimized={true} // Для корректного отображения GIF анимации
-                      onLoadingComplete={() => setIsImageLoading(false)}
+                      onLoad={() => setIsImageLoading(false)}
                       onError={() => setFailedImages(prev => [...prev, activeSlide])}
                     />
                   )}

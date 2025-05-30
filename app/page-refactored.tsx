@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Inter } from 'next/font/google'
 import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
-import HeroSection from "@/components/sections/HeroSection"
+import AdaptiveHeroSection from "@/components/AdaptiveHeroSection"
 import ProblemSolutionSection from "@/components/sections/ProblemSolutionSection"
 import CapabilitiesSection from "@/components/sections/CapabilitiesSection"
 import ProductTourSection from "@/components/sections/ProductTourSection"
@@ -111,7 +111,7 @@ export default function PageRefactored() {
       <Header onScrollToForm={handleScrollToForm} />
 
       <main className="flex-grow">
-        <HeroSection 
+        <AdaptiveHeroSection 
           onScrollToForm={handleScrollToForm}
           onScrollToProduct={handleScrollToProduct}
         />

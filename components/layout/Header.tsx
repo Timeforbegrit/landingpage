@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Manrope } from 'next/font/google'
+import { MenuIcon, XIcon } from 'lucide-react'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -12,34 +14,130 @@ const manrope = Manrope({
 
 interface HeaderProps {
   onScrollToForm: () => void
+  smoothScrollTo: (elementId: string) => void
 }
 
-export default function Header({ onScrollToForm }: HeaderProps) {
+export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleNavClick = (elementId: string) => {
+    smoothScrollTo(elementId)
+    setIsMenuOpen(false) // Закрываем меню после клика
+  }
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-md">
-      <div className="max-w-7xl mx-auto flex w-full items-center justify-between py-4 px-6">
-        <Link href="/" className={`flex items-center gap-3 ${manrope.className}`}>
-          <img 
-            src="/images/logo.png" 
-            alt="Право (риски)" 
-            className="w-10 h-10 object-contain"
-            style={{ 
-              transform: 'scale(2)'
-            }}
-          />
-        </Link>
-        <nav className="hidden md:flex flex-1 justify-center items-center gap-8">
-          <Link href="#product" className="text-gray-300 hover:text-white transition-colors">Продукт</Link>
-          <Link href="#capabilities" className="text-gray-300 hover:text-white transition-colors">Возможности</Link>
-          <Link href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">Как работает</Link>
-          <Link href="#faq" className="text-gray-300 hover:text-white transition-colors">FAQ</Link>
-        </nav>
-        <Button 
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium"
-          onClick={onScrollToForm}
-        >
-          Получить доступ
-        </Button>
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between py-4">
+          {/* Left - Logo */}
+          <div className="flex justify-start">
+            <Link href="/" className={`flex items-center gap-3 ${manrope.className}`}>
+              <img 
+                src="/images/logo.png" 
+                alt="Право (риски)" 
+                className="w-10 h-10 object-contain"
+                style={{ 
+                  transform: 'scale(2)'
+                }}
+              />
+            </Link>
+          </div>
+          
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex justify-center items-center gap-8">
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('product'); }} 
+              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
+            >
+              Продукт
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('capabilities'); }} 
+              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
+            >
+              Возможности
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('faq'); }} 
+              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
+            >
+              FAQ
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+          </nav>
+          
+          {/* Desktop CTA Button */}
+          <div className="hidden md:flex justify-end">
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium"
+              onClick={onScrollToForm}
+            >
+              Получить доступ
+            </Button>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <button
+              onClick={toggleMenu}
+              className="text-gray-300 hover:text-white transition-colors p-2"
+              aria-label="Открыть меню"
+            >
+              {isMenuOpen ? (
+                <XIcon className="w-6 h-6" />
+              ) : (
+                <MenuIcon className="w-6 h-6" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`md:hidden transition-all duration-300 overflow-hidden ${
+          isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <nav className="py-4 border-t border-gray-700/50">
+            <div className="flex flex-col space-y-4">
+              <button 
+                onClick={(e) => { e.preventDefault(); handleNavClick('product'); }} 
+                className="text-gray-300 hover:text-white transition-colors text-left py-2 px-4 rounded-lg hover:bg-gray-800/50"
+              >
+                Продукт
+              </button>
+              <button 
+                onClick={(e) => { e.preventDefault(); handleNavClick('capabilities'); }} 
+                className="text-gray-300 hover:text-white transition-colors text-left py-2 px-4 rounded-lg hover:bg-gray-800/50"
+              >
+                Возможности
+              </button>
+              <button 
+                onClick={(e) => { e.preventDefault(); handleNavClick('faq'); }} 
+                className="text-gray-300 hover:text-white transition-colors text-left py-2 px-4 rounded-lg hover:bg-gray-800/50"
+              >
+                FAQ
+              </button>
+              
+              {/* Mobile CTA Button */}
+              <div className="pt-2">
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium w-full"
+                  onClick={() => {
+                    onScrollToForm()
+                    setIsMenuOpen(false)
+                  }}
+                >
+                  Получить доступ
+                </Button>
+              </div>
+            </div>
+          </nav>
+        </div>
       </div>
     </header>
   )
