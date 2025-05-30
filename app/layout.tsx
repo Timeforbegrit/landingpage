@@ -25,9 +25,8 @@ export const metadata: Metadata = {
         type: "image/svg+xml",
       },
       {
-        url: "/favicon.ico",
-        type: "image/x-icon",
-        sizes: "16x16"
+        url: "data:image/svg+xml,<svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='32' height='32' rx='6' fill='%233b82f6'/><g fill='white'><rect x='7' y='8' width='3' height='16' rx='1'/><rect x='16' y='8' width='3' height='16' rx='1'/><rect x='7' y='8' width='12' height='3' rx='1'/></g><circle cx='23' cy='11' r='2.5' fill='%2360a5fa'/></svg>",
+        type: "image/svg+xml",
       }
     ],
     apple: [
@@ -80,10 +79,11 @@ export default function RootLayout({
     <html lang="ru" className="dark">
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" href="data:image/svg+xml,<svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'><rect width='32' height='32' rx='6' fill='%233b82f6'/><g fill='white'><rect x='7' y='8' width='3' height='16' rx='1'/><rect x='16' y='8' width='3' height='16' rx='1'/><rect x='7' y='8' width='12' height='3' rx='1'/></g><circle cx='23' cy='11' r='2.5' fill='%2360a5fa'/></svg>" />
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon.svg" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#2563eb" />
+        <meta name="msapplication-TileColor" content="#2563eb" />
       </head>
       <body className={`${inter.className} bg-black bg-dotted-grid`}>{children}</body>
     </html>

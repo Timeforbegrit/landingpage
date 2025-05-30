@@ -14,7 +14,7 @@
   </defs>
   
   <!-- Закругленный фон -->
-  <rect width="32" height="32" rx="8" fill="url(#bgGradient)"/>
+  <rect width="32" height="32" rx="6" fill="url(#bgGradient)"/>
   
   <!-- Стилизованная буква П -->
   <g fill="white">
@@ -30,5 +30,5 @@
   <circle cx="23" cy="11" r="2.5" fill="url(#accentGradient)" opacity="0.9"/>
   
   <!-- Дополнительная подсветка -->
-  <rect x="0" y="0" width="32" height="16" rx="8" fill="white" opacity="0.1"/>
+  <rect x="0" y="0" width="32" height="16" rx="6" fill="white" opacity="0.1"/>
 </svg> 
