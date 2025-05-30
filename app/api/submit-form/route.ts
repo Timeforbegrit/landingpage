@@ -37,6 +37,23 @@ export async function POST(request: NextRequest) {
   try {
     console.log('🚀 Начало обработки POST запроса к /api/submit-form')
     
+    // Диагностика переменных окружения
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    
+    console.log('🔍 Проверка переменных окружения:')
+    console.log('NEXT_PUBLIC_SUPABASE_URL:', supabaseUrl ? `✅ ${supabaseUrl}` : '❌ НЕ НАЙДЕНА')
+    console.log('NEXT_PUBLIC_SUPABASE_ANON_KEY:', supabaseKey ? `✅ ${supabaseKey.substring(0, 20)}...` : '❌ НЕ НАЙДЕНА')
+    
+    if (!supabaseUrl || !supabaseKey) {
+      console.error('❌ Критическая ошибка: переменные окружения Supabase не настроены')
+      return NextResponse.json({
+        success: false,
+        message: 'Ошибка конфигурации сервера',
+        details: 'Supabase переменные окружения не настроены'
+      }, { status: 500 })
+    }
+    
     // Получаем данные из запроса
     const formData: FormSubmission = await request.json()
     console.log('📥 Получены данные формы:', { 

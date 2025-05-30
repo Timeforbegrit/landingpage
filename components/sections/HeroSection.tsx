@@ -17,7 +17,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onScrollToForm, onScrollToProduct }: HeroSectionProps) {
   return (
-    <section className="min-h-screen flex items-center justify-center py-20 px-6 relative">
+    <section className="min-h-screen flex items-center justify-center pt-24 pb-20 px-6 relative">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-transparent to-blue-800/10" />
         <div className="absolute top-20 left-20 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl" />
