@@ -303,6 +303,9 @@ export default function Page() {
           </div>
         </section>
 
+        {/* Capabilities Section */}
+        <CapabilitiesSection />
+
         {/* Problem → Solution Section */}
         <section className="py-20 px-6 bg-gradient-to-br from-gray-900/80 via-gray-900/50 to-gray-800/30 relative overflow-hidden">
           {/* Background Effects */}
@@ -321,15 +324,14 @@ export default function Page() {
                 <span className="bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">Решение</span>
               </h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                От Excel-хаоса к единой AI-платформе управления рисками
+                От хаоса к единой AI-платформе управления рисками
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-stretch">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Problem Side */}
               <div className="scroll-animation">
                 <div className="relative h-full">
-                  {/* Problem Card */}
                   <div className="bg-gradient-to-br from-red-900/20 to-red-800/10 border border-red-500/30 rounded-2xl p-8 backdrop-blur-sm hover:border-red-500/50 transition-all duration-500 group h-full flex flex-col">
                     {/* Header */}
                     <div className="flex items-center gap-4 mb-8">
@@ -490,9 +492,6 @@ export default function Page() {
             </div>
           </div>
         </section>
-
-        {/* Capabilities Section */}
-        <CapabilitiesSection />
 
         {/* Product Tour Section */}
         <ProductTourSection />

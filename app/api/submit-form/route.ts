@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { FormData } from '@/lib/types'
 import { supabase } from '@/lib/supabase/client'
+
+// Интерфейс для данных формы
+interface FormSubmission {
+  name: string
+  email: string
+  company: string
+  position?: string
+  phone: string
+}
 
 // Валидация данных формы
 function validateFormData(data: any): { isValid: boolean; errors: string[] } {
@@ -25,30 +33,22 @@ function validateFormData(data: any): { isValid: boolean; errors: string[] } {
   return { isValid: errors.length === 0, errors }
 }
 
-// Отправка email уведомления (заглушка)
-async function sendEmailNotification(formData: FormData) {
-  console.log('📧 Отправка email уведомления:', {
-    to: 'sales@newbusiness.io',
-    subject: `Новая заявка от ${formData.name} (${formData.company})`,
-    data: formData
-  })
-  
-  // Здесь можно интегрировать реальный email сервис:
-  // - Nodemailer + SMTP
-  // - SendGrid
-  // - Mailgun
-  // - Resend
-  
-  return true
-}
-
 export async function POST(request: NextRequest) {
   try {
-    const formData: FormData = await request.json()
+    console.log('🚀 Начало обработки POST запроса к /api/submit-form')
+    
+    // Получаем данные из запроса
+    const formData: FormSubmission = await request.json()
+    console.log('📥 Получены данные формы:', { 
+      name: formData.name, 
+      email: formData.email, 
+      company: formData.company 
+    })
     
     // Валидация данных
     const validation = validateFormData(formData)
     if (!validation.isValid) {
+      console.log('❌ Ошибка валидации:', validation.errors)
       return NextResponse.json({
         success: false,
         errors: validation.errors
@@ -67,6 +67,8 @@ export async function POST(request: NextRequest) {
       source: 'website'
     }
     
+    console.log('💾 Попытка сохранения в Supabase...')
+    
     // Сохранение в Supabase
     const { data: submission, error } = await supabase
       .from('submissions')
@@ -75,15 +77,22 @@ export async function POST(request: NextRequest) {
       .single()
     
     if (error) {
-      console.error('Ошибка сохранения в Supabase:', error)
+      console.error('❌ Ошибка сохранения в Supabase:', error)
       return NextResponse.json({
         success: false,
-        message: 'Ошибка сохранения данных'
+        message: 'Ошибка сохранения данных',
+        details: error.message
       }, { status: 500 })
     }
     
-    // Отправка email уведомления
-    await sendEmailNotification(formData)
+    console.log('✅ Данные успешно сохранены:', submission?.id)
+    
+    // Логируем успешную отправку (вместо реальной отправки email)
+    console.log('📧 Email уведомление (заглушка):', {
+      to: 'admin@company.com',
+      subject: `Новая заявка от ${formData.name} (${formData.company})`,
+      submissionId: submission.id
+    })
     
     // Успешный ответ
     return NextResponse.json({
@@ -93,40 +102,49 @@ export async function POST(request: NextRequest) {
     })
     
   } catch (error) {
-    console.error('Ошибка обработки формы:', error)
+    console.error('❌ Критическая ошибка в API:', error)
     return NextResponse.json({
       success: false,
-      message: 'Внутренняя ошибка сервера'
+      message: 'Внутренняя ошибка сервера',
+      details: error instanceof Error ? error.message : 'Неизвестная ошибка'
     }, { status: 500 })
   }
 }
 
-// API для получения всех заявок (только для админов)
+// API для получения всех заявок (для отладки)
 export async function GET() {
   try {
+    console.log('🔍 GET запрос к /api/submit-form')
+    
     // Получение заявок из Supabase
     const { data: submissions, error } = await supabase
       .from('submissions')
       .select('*')
       .order('created_at', { ascending: false })
+      .limit(10)
     
     if (error) {
-      console.error('Ошибка получения заявок:', error)
+      console.error('❌ Ошибка получения заявок:', error)
       return NextResponse.json({
         success: false,
-        message: 'Ошибка получения данных'
+        message: 'Ошибка получения данных',
+        details: error.message
       }, { status: 500 })
     }
     
+    console.log(`✅ Получено ${submissions?.length || 0} заявок`)
+    
     return NextResponse.json({
       success: true,
+      count: submissions?.length || 0,
       submissions: submissions || []
     })
   } catch (error) {
-    console.error('Ошибка получения заявок:', error)
+    console.error('❌ Ошибка в GET /api/submit-form:', error)
     return NextResponse.json({
       success: false,
-      message: 'Ошибка получения данных'
+      message: 'Ошибка получения данных',
+      details: error instanceof Error ? error.message : 'Неизвестная ошибка'
     }, { status: 500 })
   }
 } 

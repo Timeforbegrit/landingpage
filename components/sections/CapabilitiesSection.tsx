@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Manrope } from 'next/font/google'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { capabilities, getCapabilityIcon } from '@/lib/data/capabilities'
 
 const manrope = Manrope({
@@ -15,6 +16,15 @@ export default function CapabilitiesSection() {
 
   const handleCapabilityClick = (index: number) => {
     setActiveCapability(index)
+  }
+
+  // Функции для стрелочек
+  const nextCapability = () => {
+    setActiveCapability((prev) => (prev + 1) % capabilities.length)
+  }
+
+  const prevCapability = () => {
+    setActiveCapability((prev) => (prev - 1 + capabilities.length) % capabilities.length)
   }
 
   // Рассчитываем позиции для орбитальных элементов
@@ -63,7 +73,7 @@ export default function CapabilitiesSection() {
         </div>
 
         {/* Основная радиальная структура */}
-        <div className="flex flex-col lg:flex-row items-center gap-16">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Орбитальная диаграмма */}
           <div className="relative flex-1 flex justify-center">
             <div className="relative w-[500px] h-[500px] flex items-center justify-center">
@@ -83,10 +93,31 @@ export default function CapabilitiesSection() {
                   <div className="absolute inset-0 rounded-full bg-blue-500/30 animate-ping" />
                   <div className="absolute inset-2 rounded-full bg-blue-400/20 animate-ping" style={{animationDelay: '0.5s'}} />
                 </div>
+
+                {/* Стрелочки навигации около центрального кружочка */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  {/* Левая стрелочка */}
+                  <button
+                    onClick={prevCapability}
+                    className="absolute -left-20 w-12 h-12 bg-gray-800/80 hover:bg-gray-700/80 border border-gray-600/50 hover:border-blue-500/50 rounded-full flex items-center justify-center transition-all duration-300 group backdrop-blur-sm pointer-events-auto"
+                    aria-label="Предыдущая возможность"
+                  >
+                    <ChevronLeftIcon className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
+                  </button>
+
+                  {/* Правая стрелочка */}
+                  <button
+                    onClick={nextCapability}
+                    className="absolute -right-20 w-12 h-12 bg-gray-800/80 hover:bg-gray-700/80 border border-gray-600/50 hover:border-blue-500/50 rounded-full flex items-center justify-center transition-all duration-300 group backdrop-blur-sm pointer-events-auto"
+                    aria-label="Следующая возможность"
+                  >
+                    <ChevronRightIcon className="w-6 h-6 text-gray-400 group-hover:text-white transition-colors" />
+                  </button>
+                </div>
               </div>
 
               {/* Орбитальные кольца */}
-              <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute inset-0 z-10">
                 {/* Внешнее кольцо */}
                 <div className="absolute inset-8 border border-gray-600/30 rounded-full" />
                 <div className="absolute inset-12 border border-gray-600/20 rounded-full" />
@@ -159,7 +190,7 @@ export default function CapabilitiesSection() {
           </div>
 
           {/* Информационная панель */}
-          <div className="flex-1 max-w-lg">
+          <div className="flex-1">
             <div className="bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-lg border border-gray-700/50 rounded-2xl p-8 relative overflow-hidden">
               
               {/* Фоновый эффект */}
@@ -192,7 +223,7 @@ export default function CapabilitiesSection() {
                 </p>
 
                 {/* Ключевые метрики */}
-                <div className="mb-6">
+                <div className="mb-8">
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-sm text-gray-400">Ключевое преимущество</span>
                     <div className="flex items-center gap-2">
@@ -220,7 +251,7 @@ export default function CapabilitiesSection() {
                 </div>
 
                 {/* Навигационные точки */}
-                <div className="flex gap-2">
+                <div className="flex justify-center gap-3">
                   {capabilities.map((_, index) => (
                     <button
                       key={index}
