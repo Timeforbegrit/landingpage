@@ -51,7 +51,7 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
     },
     {
       title: "Исполнение под контролем",
-      description: "Задачи с дедлайнами и RACI создаются автоматически",
+      description: "Задачи с дедлайнами и ответственными создаются автоматически",
       icon: <CheckIcon className="w-6 h-6 text-white" />
     },
     {

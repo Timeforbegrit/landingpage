@@ -70,10 +70,10 @@ export default function HeroSection({ onScrollToForm, onScrollToProduct }: HeroS
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto fade-in delay-2">
           <div className="text-center p-6 border border-gray-800/50 rounded-lg bg-gray-900/20 backdrop-blur-md outline-none transition-all duration-300 hover:scale-105 hover:bg-gray-900/30 hover:backdrop-blur-lg hover:border-blue-600">
             <div className="text-3xl font-bold text-blue-500 mb-2">4-6 недель</div>
-            <div className="text-gray-400">MVP-запуск</div>
+            <div className="text-gray-400">Тестовая версия</div>
           </div>
           <div className="text-center p-6 border border-gray-800/50 rounded-lg bg-gray-900/20 backdrop-blur-md outline-none transition-all duration-300 hover:scale-105 hover:bg-gray-900/30 hover:backdrop-blur-lg hover:border-blue-600">
-            <div className="text-3xl font-bold text-blue-500 mb-2">AI-powered</div>
+            <div className="text-3xl font-bold text-blue-500 mb-2">С ИИ-поиском</div>
             <div className="text-gray-400">Анализ рисков</div>
           </div>
           <div className="text-center p-6 border border-gray-800/50 rounded-lg bg-gray-900/20 backdrop-blur-md outline-none transition-all duration-300 hover:scale-105 hover:bg-gray-900/30 hover:backdrop-blur-lg hover:border-blue-600">
