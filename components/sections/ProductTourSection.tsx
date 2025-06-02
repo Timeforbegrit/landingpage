@@ -114,6 +114,12 @@ export default function ProductTourSection() {
     }
   }
 
+  // Получаем текущий слайд с проверкой
+  const currentSlide = productSlides[activeSlide]
+  if (!currentSlide) {
+    return null
+  }
+
   return (
     <section id="product" className="py-20 px-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
       {/* Фоновые эффекты */}
@@ -145,6 +151,11 @@ export default function ProductTourSection() {
               {productSlides.map((slide, index) => {
                 const IconComponent = slideIcons[index]
                 const isActive = index === activeSlide
+                
+                // Проверяем что IconComponent существует
+                if (!IconComponent) {
+                  return null
+                }
                 
                 return (
                   <button
@@ -206,10 +217,10 @@ export default function ProductTourSection() {
                 </div>
                 <div>
                   <h3 className={`text-3xl font-bold text-white mb-3 ${manrope.className}`}>
-                    {productSlides[activeSlide].title}
+                    {currentSlide.title}
                   </h3>
                   <p className="text-gray-300 text-lg">
-                    {productSlides[activeSlide].description}
+                    {currentSlide.description}
                   </p>
                 </div>
               </div>
@@ -246,17 +257,17 @@ export default function ProductTourSection() {
                           ))}
                         </div>
                         <div className="text-white font-semibold text-lg mb-2">
-                          {productSlides[activeSlide].title}
+                          {currentSlide.title}
                         </div>
                         <div className="text-gray-300 max-w-lg mx-auto">
-                          {productSlides[activeSlide].description}
+                          {currentSlide.description}
                         </div>
                       </div>
                     </div>
                   ) : (
                     <Image
-                      src={productSlides[activeSlide].image}
-                      alt={`Демонстрация: ${productSlides[activeSlide].title}`}
+                      src={currentSlide.image}
+                      alt={`Демонстрация: ${currentSlide.title}`}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
                       className={`object-contain bg-white/5 rounded-xl md:rounded-2xl transition-opacity duration-500 ${
@@ -348,29 +359,30 @@ export default function ProductTourSection() {
               style={{ pointerEvents: 'auto' }}
               type="button"
             >
-              ← Назад
+              Скрыть
             </button>
-            <div className="text-gray-300 text-sm">
-              +7 (999) 123-45-67
-            </div>
-            <div className="flex gap-3">
-              <button 
-                className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all duration-300 hover:scale-110 shadow-lg cursor-pointer pointer-events-auto relative z-50"
-                title="Telegram"
-                onClick={() => window.open('https://t.me/pravorisk_ai', '_blank')}
-                type="button"
-              >
-                <TelegramIcon />
-              </button>
-              <button 
-                className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-all duration-300 hover:scale-110 shadow-lg cursor-pointer pointer-events-auto relative z-50"
-                title="WhatsApp"
-                onClick={() => window.open('https://wa.me/79991234567', '_blank')}
-                type="button"
-              >
-                <WhatsAppIcon />
-              </button>
-            </div>
+            
+            <a 
+              href="https://t.me/your_telegram" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all duration-300 cursor-pointer pointer-events-auto relative z-50"
+              style={{ pointerEvents: 'auto' }}
+            >
+              <TelegramIcon />
+              <span className="text-sm">Telegram</span>
+            </a>
+            
+            <a 
+              href="https://wa.me/your_whatsapp" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all duration-300 cursor-pointer pointer-events-auto relative z-50"
+              style={{ pointerEvents: 'auto' }}
+            >
+              <WhatsAppIcon />
+              <span className="text-sm">WhatsApp</span>
+            </a>
           </div>
         )}
       </div>

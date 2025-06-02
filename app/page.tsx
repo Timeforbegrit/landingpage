@@ -45,7 +45,9 @@ export default function Page() {
     email: '',
     company: '',
     position: '',
-    phone: ''
+    phone: '',
+    dataProcessingConsent: false,
+    marketingConsent: false
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState<string>('')
@@ -107,7 +109,9 @@ export default function Page() {
           email: '',
           company: '',
           position: '',
-          phone: ''
+          phone: '',
+          dataProcessingConsent: false,
+          marketingConsent: false
         })
       } else {
         setSubmitError(result.errors || [result.message || 'Произошла ошибка'])
@@ -123,6 +127,17 @@ export default function Page() {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
+    })
+    // Очищаем ошибки при изменении полей
+    if (submitError.length > 0) {
+      setSubmitError([])
+    }
+  }
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.checked
     })
     // Очищаем ошибки при изменении полей
     if (submitError.length > 0) {
@@ -170,6 +185,7 @@ export default function Page() {
           formData={formData}
           onFormSubmit={handleFormSubmit}
           onInputChange={handleInputChange}
+          onCheckboxChange={handleCheckboxChange}
           isSubmitting={isSubmitting}
           submitMessage={submitMessage}
           submitError={submitError}
@@ -183,13 +199,12 @@ export default function Page() {
             <div className="md:col-span-2">
               <Link href="/" className={`flex items-center gap-3 mb-4 ${manrope.className}`}>
                 <Image 
-                  src="/images/logo.png" 
+                  src="/images/logo.svg" 
                   alt="Право (риски)" 
-                  width={40}
-                  height={40}
-                  className="object-contain scale-150"
+                  width={60}
+                  height={60}
+                  className="object-contain"
                 />
-                <span className="text-xl font-bold text-white">Право (риски)</span>
               </Link>
               <p className="text-gray-400 mb-4 max-w-md">
                 AI-платформа для комплексного управления корпоративными рисками. 
@@ -238,7 +253,7 @@ export default function Page() {
 
           <div className="border-t border-gray-800 mt-8 pt-8 text-center">
             <p className="text-gray-400">
-              © 2024 Право (риски). Все права защищены.
+              © 2025 Право (риски). Все права защищены.
             </p>
           </div>
         </div>

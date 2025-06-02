@@ -51,6 +51,12 @@ export default function CapabilitiesSection() {
     return benefits[index] || benefits[0]
   }
 
+  // Получаем текущую активную возможность с проверкой
+  const currentCapability = capabilities[activeCapability]
+  if (!currentCapability) {
+    return null // или можно показать загрузку
+  }
+
   return (
     <section id="capabilities" className="py-20 px-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
       {/* Фоновые эффекты */}
@@ -86,7 +92,7 @@ export default function CapabilitiesSection() {
                   
                   {/* Иконка активной возможности */}
                   <div className="relative z-10 text-white transform group-hover:scale-110 transition-transform duration-300">
-                    {getCapabilityIcon(capabilities[activeCapability].iconName)}
+                    {getCapabilityIcon(currentCapability.iconName)}
                   </div>
                   
                   {/* Пульсирующий эффект */}
@@ -201,12 +207,12 @@ export default function CapabilitiesSection() {
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25">
                     <div className="text-white">
-                      {getCapabilityIcon(capabilities[activeCapability].iconName)}
+                      {getCapabilityIcon(currentCapability.iconName)}
                     </div>
                   </div>
                   <div>
                     <h3 className={`text-2xl font-bold text-white mb-2 ${manrope.className}`}>
-                      {capabilities[activeCapability].title}
+                      {currentCapability.title}
                     </h3>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
@@ -219,7 +225,7 @@ export default function CapabilitiesSection() {
 
                 {/* Описание */}
                 <p className="text-gray-300 text-lg leading-relaxed mb-8">
-                  {capabilities[activeCapability].description}
+                  {currentCapability.description}
                 </p>
 
                 {/* Ключевые метрики */}
@@ -235,15 +241,15 @@ export default function CapabilitiesSection() {
                     <div className="flex items-center justify-between">
                       <div>
                         <div className="text-2xl font-bold text-blue-400 mb-1">
-                          {getCapabilityBenefits(activeCapability).time}
+                          {getCapabilityBenefits(activeCapability)?.time || 'N/A'}
                         </div>
                         <div className="text-gray-300 text-sm">
-                          {getCapabilityBenefits(activeCapability).description}
+                          {getCapabilityBenefits(activeCapability)?.description || 'Описание недоступно'}
                         </div>
                       </div>
                       <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-blue-700/20 rounded-lg flex items-center justify-center">
                         <div className="text-blue-400">
-                          {getCapabilityIcon(capabilities[activeCapability].iconName)}
+                          {getCapabilityIcon(currentCapability.iconName)}
                         </div>
                       </div>
                     </div>

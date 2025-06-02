@@ -15,6 +15,7 @@ interface ContactFormSectionProps {
   formData: FormData
   onFormSubmit: (e: React.FormEvent) => void
   onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   isSubmitting?: boolean
   submitMessage?: string
   submitError?: string[]
@@ -24,6 +25,7 @@ export default function ContactFormSection({
   formData, 
   onFormSubmit, 
   onInputChange,
+  onCheckboxChange,
   isSubmitting = false,
   submitMessage = '',
   submitError = []
@@ -149,6 +151,65 @@ export default function ContactFormSection({
               value={formData.phone}
               onChange={onInputChange}
             />
+          </div>
+
+          {/* Согласия */}
+          <div className="space-y-4">
+            <div className="flex items-start space-x-3">
+              <input
+                type="checkbox"
+                name="dataProcessingConsent"
+                id="dataProcessingConsent"
+                required
+                disabled={isSubmitting}
+                checked={formData.dataProcessingConsent}
+                onChange={onCheckboxChange}
+                className="mt-1 w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <label htmlFor="dataProcessingConsent" className="text-sm text-gray-300">
+                Я даю{' '}
+                <a 
+                  href="/privacy-consent.pdf" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors"
+                >
+                  согласие
+                </a>{' '}
+                на обработку персональных данных в соответствии с{' '}
+                <a 
+                  href="/privacy-policy.pdf" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors"
+                >
+                  политикой конфиденциальности
+                </a>.
+              </label>
+            </div>
+
+            <div className="flex items-start space-x-3">
+              <input
+                type="checkbox"
+                name="marketingConsent"
+                id="marketingConsent"
+                disabled={isSubmitting}
+                checked={formData.marketingConsent}
+                onChange={onCheckboxChange}
+                className="mt-1 w-4 h-4 text-blue-600 bg-gray-800 border-gray-600 rounded focus:ring-blue-500 focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <label htmlFor="marketingConsent" className="text-sm text-gray-300">
+                Я даю согласие на получение информационных и рекламных сообщений в соответствии с{' '}
+                <a 
+                  href="/privacy-policy.pdf" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors"
+                >
+                  Правилами
+                </a>.
+              </label>
+            </div>
           </div>
 
           <Button 

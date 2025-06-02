@@ -37,4 +37,6 @@ export interface FormData {
   company: string
   position: string
   phone: string
+  dataProcessingConsent: boolean
+  marketingConsent: boolean
 } 

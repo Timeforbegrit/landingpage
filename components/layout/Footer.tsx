@@ -19,13 +19,12 @@ export default function Footer() {
           <div className="md:col-span-2">
             <Link href="/" className={`flex items-center gap-3 mb-4 ${manrope.className}`}>
               <Image 
-                src="/images/logo.png" 
+                src="/images/logo.svg" 
                 alt="Право (риски)" 
-                width={40}
-                height={40}
-                className="object-contain scale-150"
+                width={60}
+                height={60}
+                className="object-contain"
               />
-              <span className="text-xl font-bold text-white">Право (риски)</span>
             </Link>
             <p className="text-gray-400 mb-4 max-w-md">
               AI-платформа для комплексного управления корпоративными рисками. 
@@ -61,7 +60,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            © 2024 Право (риски). Все права защищены.
+            © 2025 Право (риски). Все права защищены.
           </p>
         </div>
       </div>

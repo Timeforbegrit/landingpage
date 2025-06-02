@@ -32,13 +32,13 @@ export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) 
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 relative">
         <div className="flex items-center justify-between py-4">
           {/* Left - Logo */}
           <div className="flex justify-start">
             <Link href="/" className={`flex items-center gap-3 ${manrope.className}`}>
               <Image 
-                src="/images/logo.png" 
+                src="/images/logo.svg" 
                 alt="Право (риски)" 
                 width={40}
                 height={40}
@@ -49,31 +49,6 @@ export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) 
               />
             </Link>
           </div>
-          
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex justify-center items-center gap-8">
-            <button 
-              onClick={(e) => { e.preventDefault(); smoothScrollTo('product'); }} 
-              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
-            >
-              Продукт
-              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </button>
-            <button 
-              onClick={(e) => { e.preventDefault(); smoothScrollTo('capabilities'); }} 
-              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
-            >
-              Возможности
-              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </button>
-            <button 
-              onClick={(e) => { e.preventDefault(); smoothScrollTo('faq'); }} 
-              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
-            >
-              FAQ
-              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </button>
-          </nav>
           
           {/* Desktop CTA Button */}
           <div className="hidden md:flex justify-end">
@@ -99,6 +74,32 @@ export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) 
               )}
             </button>
           </div>
+        </div>
+        {/* Центрированная навигация */}
+        <div className="hidden md:block absolute left-1/2 top-6 translate-x-[-50%] w-full pointer-events-none" style={{height: '0'}}>
+          <nav className="flex justify-center items-center gap-8 pointer-events-auto">
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('product'); }} 
+              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
+            >
+              Продукт
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('capabilities'); }} 
+              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
+            >
+              Возможности
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('faq'); }} 
+              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
+            >
+              FAQ
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+          </nav>
         </div>
 
         {/* Mobile Menu */}

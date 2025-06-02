@@ -38,6 +38,8 @@ export interface SubmissionRecord {
   company: string
   position?: string
   phone: string
+  data_processing_consent: boolean
+  marketing_consent: boolean
   ip_address?: string
   user_agent?: string
   source: string

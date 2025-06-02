@@ -24,6 +24,53 @@ const slideIcons = [
 export default function ProductTourSectionMobile() {
   const [activeSlide, setActiveSlide] = useState(0)
   const [isImageLoading, setIsImageLoading] = useState(true)
+  const [loadedImages, setLoadedImages] = useState<number[]>([])
+  const [failedImages, setFailedImages] = useState<number[]>([])
+  const [isPaused, setIsPaused] = useState(false)
+
+  // Прелоадинг изображений
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = productSlides.map((slide, index) => {
+        return new Promise((resolve) => {
+          const img = new window.Image()
+          img.onload = () => {
+            setLoadedImages(prev => [...prev, index])
+            resolve(true)
+          }
+          img.onerror = () => {
+            setFailedImages(prev => [...prev, index])
+            resolve(false)
+          }
+          img.src = slide.image
+        })
+      })
+      
+      await Promise.all(imagePromises)
+    }
+
+    preloadImages()
+  }, [])
+
+  // Автоматическое переключение слайдов
+  useEffect(() => {
+    if (isPaused) return
+
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % productSlides.length)
+    }, 5000) // Переключение каждые 5 секунд
+
+    return () => clearInterval(interval)
+  }, [isPaused])
+
+  // Обработка загрузки текущего изображения
+  useEffect(() => {
+    if (loadedImages.includes(activeSlide) || failedImages.includes(activeSlide)) {
+      setIsImageLoading(false)
+    } else {
+      setIsImageLoading(true)
+    }
+  }, [activeSlide, loadedImages, failedImages])
 
   const nextSlide = () => {
     setActiveSlide((prev) => (prev + 1) % productSlides.length)
@@ -38,6 +85,12 @@ export default function ProductTourSectionMobile() {
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' })
     }
+  }
+
+  // Получаем текущий слайд с проверкой
+  const currentSlide = productSlides[activeSlide]
+  if (!currentSlide) {
+    return null
   }
 
   return (
@@ -78,7 +131,7 @@ export default function ProductTourSectionMobile() {
               </div>
               <div className="flex-1">
                 <h3 className={`text-lg font-bold text-white mb-1 ${manrope.className}`}>
-                  {productSlides[activeSlide].title}
+                  {currentSlide.title}
                 </h3>
                 <div className="text-blue-400 text-xs">
                   {activeSlide + 1} из {productSlides.length}
@@ -88,14 +141,14 @@ export default function ProductTourSectionMobile() {
 
             {/* Description */}
             <p className="text-gray-300 text-sm mb-4 leading-relaxed">
-              {productSlides[activeSlide].description}
+              {currentSlide.description}
             </p>
 
             {/* Image */}
             <div className="aspect-[16/10] bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden rounded-xl mb-4">
               <Image
-                src={productSlides[activeSlide].image}
-                alt={`Демонстрация: ${productSlides[activeSlide].title}`}
+                src={currentSlide.image}
+                alt={`Демонстрация: ${currentSlide.title}`}
                 fill
                 sizes="(max-width: 768px) 100vw, 400px"
                 className={`object-contain bg-white/5 rounded-xl transition-opacity duration-500 ${
@@ -104,7 +157,7 @@ export default function ProductTourSectionMobile() {
                 priority={activeSlide === 0}
                 unoptimized={true}
                 onLoad={() => setIsImageLoading(false)}
-                onError={() => setIsImageLoading(false)}
+                onError={() => setFailedImages(prev => [...prev, activeSlide])}
               />
               
               {/* Loading state */}
