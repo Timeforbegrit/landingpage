@@ -1,9 +1,11 @@
 'use client'
 
+import React from 'react'
 import { Button } from "@/components/ui/button"
 import { ArrowRightIcon, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { Manrope } from 'next/font/google'
 import { FormData } from '@/lib/types'
+import Image from "next/image"
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -233,6 +235,17 @@ export default function ContactFormSection({
           <p className="text-sm text-gray-400 text-center">
             Мы свяжемся с вами в течение 24 часов для согласования времени интервью
           </p>
+          
+          {/* Logo under form */}
+          <div className="flex justify-center mt-8 pt-6 border-t border-gray-700/30">
+            <Image 
+              src="/logo_pravo(tech)_white.svg" 
+              alt="Право (tech)" 
+              width={150}
+              height={50}
+              className="object-contain opacity-70"
+            />
+          </div>
         </form>
       </div>
     </section>

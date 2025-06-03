@@ -30,41 +30,69 @@ export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) 
     setIsMenuOpen(false) // Закрываем меню после клика
   }
 
+  const handleGetAccess = () => {
+    onScrollToForm()
+    setIsMenuOpen(false) // Закрываем меню если открыто
+  }
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-transparent backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-6 relative">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="flex items-center justify-between py-4">
           {/* Left - Logo */}
-          <div className="flex justify-start">
+          <div className="flex-shrink-0">
             <Link href="/" className={`flex items-center gap-3 ${manrope.className}`}>
               <Image 
                 src="/images/logo.svg" 
                 alt="Право (риски)" 
-                width={40}
+                width={120}
                 height={40}
                 className="object-contain"
-                style={{ 
-                  transform: 'scale(2)'
-                }}
               />
             </Link>
           </div>
           
-          {/* Desktop CTA Button */}
-          <div className="hidden md:flex justify-end">
-            <Button 
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium"
-              onClick={onScrollToForm}
+          {/* Center - Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-8 flex-1 justify-center">
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('product'); }} 
+              className="text-gray-300 hover:text-white transition-colors duration-200 cursor-pointer bg-transparent border-none relative group"
+            >
+              Продукт
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('capabilities'); }} 
+              className="text-gray-300 hover:text-white transition-colors duration-200 cursor-pointer bg-transparent border-none relative group"
+            >
+              Возможности
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); smoothScrollTo('faq'); }} 
+              className="text-gray-300 hover:text-white transition-colors duration-200 cursor-pointer bg-transparent border-none relative group"
+            >
+              FAQ
+              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
+            </button>
+          </nav>
+          
+          {/* Right - Desktop CTA Button and Mobile Menu Button */}
+          <div className="flex items-center gap-4 flex-shrink-0">
+            {/* Desktop CTA Button */}
+            <button
+              onClick={handleGetAccess}
+              type="button"
+              className="hidden md:block px-6 py-2 bg-blue-600 text-white rounded-lg font-medium cursor-pointer relative z-10"
             >
               Получить доступ
-            </Button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
+            </button>
+            
+            {/* Mobile Menu Button */}
             <button
               onClick={toggleMenu}
-              className="text-gray-300 hover:text-white transition-colors p-2"
+              type="button"
+              className="md:hidden text-gray-300 hover:text-white transition-colors p-2"
               aria-label="Открыть меню"
             >
               {isMenuOpen ? (
@@ -74,32 +102,6 @@ export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) 
               )}
             </button>
           </div>
-        </div>
-        {/* Центрированная навигация */}
-        <div className="hidden md:block absolute left-1/2 top-6 translate-x-[-50%] w-full pointer-events-none" style={{height: '0'}}>
-          <nav className="flex justify-center items-center gap-8 pointer-events-auto">
-            <button 
-              onClick={(e) => { e.preventDefault(); smoothScrollTo('product'); }} 
-              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
-            >
-              Продукт
-              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </button>
-            <button 
-              onClick={(e) => { e.preventDefault(); smoothScrollTo('capabilities'); }} 
-              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
-            >
-              Возможности
-              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </button>
-            <button 
-              onClick={(e) => { e.preventDefault(); smoothScrollTo('faq'); }} 
-              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer bg-transparent border-none relative group"
-            >
-              FAQ
-              <span className="absolute bottom-[-4px] left-0 w-0 h-0.5 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-            </button>
-          </nav>
         </div>
 
         {/* Mobile Menu */}
@@ -111,34 +113,33 @@ export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) 
               <button 
                 onClick={(e) => { e.preventDefault(); handleNavClick('product'); }} 
                 className="text-gray-300 hover:text-white transition-colors text-left py-2 px-4 rounded-lg hover:bg-gray-800/50"
+                type="button"
               >
                 Продукт
               </button>
               <button 
                 onClick={(e) => { e.preventDefault(); handleNavClick('capabilities'); }} 
                 className="text-gray-300 hover:text-white transition-colors text-left py-2 px-4 rounded-lg hover:bg-gray-800/50"
+                type="button"
               >
                 Возможности
               </button>
               <button 
                 onClick={(e) => { e.preventDefault(); handleNavClick('faq'); }} 
                 className="text-gray-300 hover:text-white transition-colors text-left py-2 px-4 rounded-lg hover:bg-gray-800/50"
+                type="button"
               >
                 FAQ
               </button>
               
               {/* Mobile CTA Button */}
-              <div className="pt-2">
-                <Button 
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium w-full"
-                  onClick={() => {
-                    onScrollToForm()
-                    setIsMenuOpen(false)
-                  }}
-                >
-                  Получить доступ
-                </Button>
-              </div>
+              <button 
+                onClick={handleGetAccess}
+                className="text-left py-3 px-4 bg-blue-600 text-white rounded-lg font-medium cursor-pointer mt-2"
+                type="button"
+              >
+                Получить доступ
+              </button>
             </div>
           </nav>
         </div>
