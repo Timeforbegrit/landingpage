@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { Manrope } from 'next/font/google'
+import { initDataLayer } from '@/lib/gtm'
 import AdaptiveCapabilitiesSection from "@/components/AdaptiveCapabilitiesSection"
 import AdaptiveProductTourSection from "@/components/AdaptiveProductTourSection"
 import AdaptiveProblemSolutionSection from "@/components/AdaptiveProblemSolutionSection"
@@ -64,6 +65,9 @@ export default function Page() {
   }
 
   useEffect(() => {
+    // Инициализируем dataLayer для GTM
+    initDataLayer()
+    
     observerRef.current = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {

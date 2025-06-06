@@ -5,6 +5,7 @@ import { MonitorIcon, KanbanSquareIcon, ShieldIcon, FileTextIcon, BarChart3Icon,
 import { Manrope } from 'next/font/google'
 import { productSlides } from '@/lib/data/productSlides'
 import Image from 'next/image'
+import { GTMEvents } from '@/lib/gtm'
 
 // SVG иконки для мессенджеров
 const TelegramIcon = () => (
@@ -35,11 +36,23 @@ const slideIcons = [
 
 export default function ProductTourSection() {
   const [activeSlide, setActiveSlide] = useState(0)
+  
+  // Функция для изменения слайда с GTM событием
+  const handleSlideChange = (newSlideIndex: number) => {
+    setActiveSlide(newSlideIndex)
+    // Отправляем GTM событие просмотра слайда тура (нумерация с 1)
+    GTMEvents.viewTourSlide(newSlideIndex + 1)
+  }
   const [isImageLoading, setIsImageLoading] = useState(true)
   const [loadedImages, setLoadedImages] = useState<number[]>([])
   const [failedImages, setFailedImages] = useState<number[]>([])
   const [isPaused, setIsPaused] = useState(false)
   const [showMessengers, setShowMessengers] = useState(false)
+
+  // Отправляем GTM событие просмотра первого слайда при монтировании
+  useEffect(() => {
+    GTMEvents.viewTourSlide(1)
+  }, [])
 
   // Прелоадинг изображений
   useEffect(() => {
@@ -70,11 +83,12 @@ export default function ProductTourSection() {
     if (isPaused) return
 
     const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % productSlides.length)
+      const newSlideIndex = (activeSlide + 1) % productSlides.length
+      handleSlideChange(newSlideIndex)
     }, 6000) // Переключение каждые 6 секунд
 
     return () => clearInterval(interval)
-  }, [isPaused])
+  }, [isPaused, activeSlide])
 
   // Обработка загрузки текущего изображения
   useEffect(() => {
@@ -86,15 +100,20 @@ export default function ProductTourSection() {
   }, [activeSlide, loadedImages, failedImages])
 
   const nextSlide = () => {
-    setActiveSlide((prev) => (prev + 1) % productSlides.length)
+    const newSlideIndex = (activeSlide + 1) % productSlides.length
+    handleSlideChange(newSlideIndex)
   }
 
   const prevSlide = () => {
-    setActiveSlide((prev) => (prev - 1 + productSlides.length) % productSlides.length)
+    const newSlideIndex = (activeSlide - 1 + productSlides.length) % productSlides.length
+    handleSlideChange(newSlideIndex)
   }
 
   // Функции для кнопок
   const handleDemoRequest = () => {
+    // Отправляем GTM событие для кнопки "Запросить демо" в туре
+    GTMEvents.clickDemoRequestTour()
+    
     // Скролл к форме обратной связи
     const contactSection = document.getElementById('early-access-form')
     if (contactSection) {
@@ -165,7 +184,7 @@ export default function ProductTourSection() {
                         ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25 scale-105' 
                         : 'text-gray-400 hover:text-gray-300 hover:bg-gray-800/50'
                     }`}
-                    onClick={() => setActiveSlide(index)}
+                    onClick={() => handleSlideChange(index)}
                   >
                     <IconComponent className="w-5 h-5" />
                     <span className="text-sm font-medium hidden sm:block">{slide.title}</span>
@@ -311,7 +330,7 @@ export default function ProductTourSection() {
         {productSlides.map((_, index) => (
           <button
             key={index}
-            onClick={() => setActiveSlide(index)}
+            onClick={() => handleSlideChange(index)}
             className={`transition-all duration-300 ${
               index === activeSlide
                 ? 'w-12 h-3 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50'

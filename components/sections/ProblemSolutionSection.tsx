@@ -12,6 +12,7 @@ import {
   ZapIcon,
   BrainCircuitIcon
 } from 'lucide-react'
+import { GTMEvents } from '@/lib/gtm'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -24,6 +25,12 @@ interface ProblemSolutionSectionProps {
 }
 
 export default function ProblemSolutionSection({ onScrollToForm }: ProblemSolutionSectionProps) {
+  const handleGetAccess = () => {
+    // Отправляем GTM событие для кнопки "Получить доступ" в блоке проблема-решение
+    GTMEvents.clickDemoRequestProblemSolution()
+    onScrollToForm()
+  }
+
   return (
     <section className="py-20 px-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
       {/* Background Effects */}
@@ -197,7 +204,7 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
               <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
                 <Button 
                   className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-full font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105"
-                  onClick={onScrollToForm}
+                  onClick={handleGetAccess}
                 >
                   Получить доступ
                 </Button>

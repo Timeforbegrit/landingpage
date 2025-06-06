@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRightIcon, PlayIcon } from 'lucide-react'
 import { Manrope } from 'next/font/google'
+import { GTMEvents } from '@/lib/gtm'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -16,6 +17,11 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ onScrollToForm, onScrollToProduct }: HeroSectionProps) {
+  const handleGetAccess = () => {
+    GTMEvents.clickDemoRequestMain()
+    onScrollToForm()
+  }
+
   return (
     <section className="min-h-screen flex items-center justify-center pt-24 pb-20 px-6 relative">
       <div className="absolute inset-0">
@@ -50,7 +56,7 @@ export default function HeroSection({ onScrollToForm, onScrollToProduct }: HeroS
           <Button 
             size="lg"
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg"
-            onClick={onScrollToForm}
+            onClick={handleGetAccess}
           >
             Получить доступ
             <ArrowRightIcon className="w-5 h-5 ml-2" />

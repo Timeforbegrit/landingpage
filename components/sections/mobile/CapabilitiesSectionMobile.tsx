@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Manrope } from 'next/font/google'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { capabilities, getCapabilityIcon } from '@/lib/data/capabilities'
+import { GTMEvents } from '@/lib/gtm'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -14,16 +15,27 @@ const manrope = Manrope({
 export default function CapabilitiesSectionMobile() {
   const [activeCapability, setActiveCapability] = useState(0)
 
+  // Отправляем GTM событие просмотра первой возможности при монтировании
+  useEffect(() => {
+    GTMEvents.viewOpportunitiesSlide(1)
+  }, [])
+
   const handleCapabilityClick = (index: number) => {
     setActiveCapability(index)
+    // Отправляем GTM событие просмотра возможности (нумерация с 1)
+    GTMEvents.viewOpportunitiesSlide(index + 1)
   }
 
   const nextCapability = () => {
-    setActiveCapability((prev) => (prev + 1) % capabilities.length)
+    const newIndex = (activeCapability + 1) % capabilities.length
+    setActiveCapability(newIndex)
+    GTMEvents.viewOpportunitiesSlide(newIndex + 1)
   }
 
   const prevCapability = () => {
-    setActiveCapability((prev) => (prev - 1 + capabilities.length) % capabilities.length)
+    const newIndex = (activeCapability - 1 + capabilities.length) % capabilities.length
+    setActiveCapability(newIndex)
+    GTMEvents.viewOpportunitiesSlide(newIndex + 1)
   }
 
   // Преимущества для каждой возможности

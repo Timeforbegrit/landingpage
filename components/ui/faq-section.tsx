@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { faqItems } from "@/lib/data/faqItems";
 import { Manrope } from 'next/font/google'
+import { GTMEvents } from '@/lib/gtm'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -46,6 +47,8 @@ export default function FAQSection({ onContactClick }: FAQSectionProps) {
                   className="gap-4 bg-blue-600 hover:bg-blue-700 text-white border-blue-600" 
                   variant="outline"
                   onClick={onContactClick || (() => {
+                    // Отправляем GTM событие для кнопки "Остались вопросы"
+                    GTMEvents.clickQuestions();
                     document.getElementById('early-access-form')?.scrollIntoView({ 
                       behavior: 'smooth',
                       block: 'center'

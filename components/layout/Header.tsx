@@ -6,6 +6,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Manrope } from 'next/font/google'
 import { MenuIcon, XIcon } from 'lucide-react'
+import { GTMEvents } from '@/lib/gtm'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -26,11 +27,23 @@ export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) 
   }
 
   const handleNavClick = (elementId: string) => {
+    // Отправляем GTM события для навигации
+    if (elementId === 'product') {
+      GTMEvents.clickProductHeader()
+    } else if (elementId === 'capabilities') {
+      GTMEvents.clickOpportunitiesHeader()
+    } else if (elementId === 'faq') {
+      GTMEvents.clickFAQHeader()
+    }
+    
     smoothScrollTo(elementId)
     setIsMenuOpen(false) // Закрываем меню после клика
   }
 
   const handleGetAccess = () => {
+    // Отправляем GTM событие для кнопки "Получить доступ" в хедере
+    GTMEvents.clickDemoRequestHeader()
+    
     onScrollToForm()
     setIsMenuOpen(false) // Закрываем меню если открыто
   }

@@ -6,6 +6,7 @@ import { ArrowRightIcon, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
 import { Manrope } from 'next/font/google'
 import { FormData } from '@/lib/types'
 import Image from "next/image"
+import { GTMEvents } from '@/lib/gtm'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -32,6 +33,13 @@ export default function ContactFormSection({
   submitMessage = '',
   submitError = []
 }: ContactFormSectionProps) {
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Отправляем GTM событие при отправке формы
+    GTMEvents.demoRequest()
+    onFormSubmit(e)
+  }
+
   return (
     <section id="early-access-form" className="py-20 px-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
       {/* Background Effects */}
@@ -73,7 +81,7 @@ export default function ContactFormSection({
           </div>
         )}
 
-        <form onSubmit={onFormSubmit} className="space-y-6 scroll-animation scroll-delay-1">
+        <form onSubmit={handleFormSubmit} className="space-y-6 scroll-animation scroll-delay-1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -185,7 +193,7 @@ export default function ContactFormSection({
                   rel="noopener noreferrer"
                   className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors"
                 >
-                  политикой конфиденциальности
+                  Политикой
                 </a>.
               </label>
             </div>

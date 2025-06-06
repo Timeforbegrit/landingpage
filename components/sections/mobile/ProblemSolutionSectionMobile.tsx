@@ -13,6 +13,7 @@ import {
   ZapIcon,
   BrainCircuitIcon
 } from 'lucide-react'
+import { GTMEvents } from '@/lib/gtm'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -25,6 +26,12 @@ interface ProblemSolutionSectionMobileProps {
 }
 
 export default function ProblemSolutionSectionMobile({ onScrollToForm }: ProblemSolutionSectionMobileProps) {
+  const handleGetAccess = () => {
+    // Отправляем GTM событие для кнопки "Получить доступ" в блоке проблема-решение (мобильная версия)
+    GTMEvents.clickDemoRequestProblemSolution()
+    onScrollToForm()
+  }
+
   const problemPoints = [
     {
       title: "Риски разбросаны по системам",
@@ -201,7 +208,7 @@ export default function ProblemSolutionSectionMobile({ onScrollToForm }: Problem
         <div className="text-center">
           <Button 
             className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-full font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300 hover:scale-105 w-full max-w-xs"
-            onClick={onScrollToForm}
+            onClick={handleGetAccess}
           >
             Получить доступ
           </Button>

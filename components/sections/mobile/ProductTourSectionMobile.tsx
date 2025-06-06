@@ -6,6 +6,7 @@ import { Manrope } from 'next/font/google'
 import { productSlides } from '@/lib/data/productSlides'
 import Image from 'next/image'
 import { Button } from "@/components/ui/button"
+import { GTMEvents } from '@/lib/gtm'
 
 const manrope = Manrope({
   subsets: ['latin', 'cyrillic'],
@@ -23,10 +24,22 @@ const slideIcons = [
 
 export default function ProductTourSectionMobile() {
   const [activeSlide, setActiveSlide] = useState(0)
+  
+  // Функция для изменения слайда с GTM событием
+  const handleSlideChange = (newSlideIndex: number) => {
+    setActiveSlide(newSlideIndex)
+    // Отправляем GTM событие просмотра слайда тура (нумерация с 1)
+    GTMEvents.viewTourSlide(newSlideIndex + 1)
+  }
   const [isImageLoading, setIsImageLoading] = useState(true)
   const [loadedImages, setLoadedImages] = useState<number[]>([])
   const [failedImages, setFailedImages] = useState<number[]>([])
   const [isPaused, setIsPaused] = useState(false)
+
+  // Отправляем GTM событие просмотра первого слайда при монтировании
+  useEffect(() => {
+    GTMEvents.viewTourSlide(1)
+  }, [])
 
   // Прелоадинг изображений
   useEffect(() => {
@@ -57,7 +70,8 @@ export default function ProductTourSectionMobile() {
     if (isPaused) return
 
     const interval = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % productSlides.length)
+      const newSlideIndex = (activeSlide + 1) % productSlides.length
+      handleSlideChange(newSlideIndex)
     }, 5000) // Переключение каждые 5 секунд
 
     return () => clearInterval(interval)
@@ -73,14 +87,19 @@ export default function ProductTourSectionMobile() {
   }, [activeSlide, loadedImages, failedImages])
 
   const nextSlide = () => {
-    setActiveSlide((prev) => (prev + 1) % productSlides.length)
+    const newSlideIndex = (activeSlide + 1) % productSlides.length
+    handleSlideChange(newSlideIndex)
   }
 
   const prevSlide = () => {
-    setActiveSlide((prev) => (prev - 1 + productSlides.length) % productSlides.length)
+    const newSlideIndex = (activeSlide - 1 + productSlides.length) % productSlides.length
+    handleSlideChange(newSlideIndex)
   }
 
   const handleDemoRequest = () => {
+    // Отправляем GTM событие для кнопки "Запросить демо" в туре (мобильная версия)
+    GTMEvents.clickDemoRequestTour()
+    
     const contactSection = document.getElementById('early-access-form')
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' })
@@ -190,7 +209,7 @@ export default function ProductTourSectionMobile() {
                 {productSlides.map((_, index) => (
                   <button
                     key={index}
-                    onClick={() => setActiveSlide(index)}
+                    onClick={() => handleSlideChange(index)}
                     className={`w-2 h-2 rounded-full transition-all duration-300 ${
                       index === activeSlide
                         ? 'bg-blue-500 w-4'
