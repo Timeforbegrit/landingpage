@@ -37,9 +37,9 @@ export default function FAQSection({ onContactClick }: FAQSectionProps) {
                 <h2 className={`text-4xl md:text-5xl lg:text-6xl tracking-tight max-w-xl text-left font-bold text-white ${manrope.className}`}>
                   Частые вопросы
                 </h2>
-                <p className="text-xl max-w-xl lg:max-w-lg leading-relaxed tracking-tight text-gray-300 text-left">
-                  Ответы на основные вопросы о платформе «Право (риски)». 
-                  Узнайте больше о возможностях системы и процессе внедрения.
+                <p className="text-xl max-w-2xl lg:max-w-xl leading-relaxed tracking-tight text-gray-300 text-left">
+                  Получите подробные ответы на самые важные вопросы<br />
+                  о&nbsp;возможностях платформы «Право&nbsp;(риски)».
                 </p>
               </div>
               <div className="">
