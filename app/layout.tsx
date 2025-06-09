@@ -17,7 +17,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL('https://pravo-riski.vercel.app'),
   title: "Управление корпоративными рисками",
-  description: "Комплексная система управления корпоративными рисками с AI-анализом. Объединяем все риски в одной платформе, формируем планы действий и автоматизируем процессы.",
+  description: "Комплексная система управления корпоративными рисками с ИИ-анализом. Объединяем все риски в одной платформе, формируем планы действий и автоматизируем процессы.",
   icons: {
     icon: [
       {
@@ -39,11 +39,11 @@ export const metadata: Metadata = {
     shortcut: [{ url: "/favicon.svg" }],
   },
   manifest: "/manifest.json",
-  keywords: ["управление рисками", "корпоративные риски", "AI анализ", "автоматизация", "комплаенс", "право"],
+  keywords: ["управление рисками", "корпоративные риски", "ИИ анализ", "автоматизация", "комплаенс", "право"],
   authors: [{ name: "Право (риски)" }],
   openGraph: {
     title: "Управление корпоративными рисками",
-    description: "Комплексная система управления корпоративными рисками с AI-анализом",
+    description: "Комплексная система управления корпоративными рисками с ИИ-анализом",
     url: "https://pravo-riski.vercel.app",
     siteName: "Право (риски)",
     images: [
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Управление корпоративными рисками",
-    description: "Комплексная система управления корпоративными рисками с AI-анализом",
+    description: "Комплексная система управления корпоративными рисками с ИИ-анализом",
     images: ["/images/logo.svg"],
   },
 };
@@ -78,6 +78,51 @@ export default function RootLayout({
   return (
     <html lang="ru" className="dark">
       <head>
+        {/* Инициализация переменных перед GTM */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            
+            // Заглушки для внешних сервисов
+            window.ym = window.ym || function(){
+              console.log('Yandex.Metrica not loaded, call ignored:', arguments);
+            };
+            
+            // Заглушка для jQuery
+            if (typeof window.$ === 'undefined') {
+              window.$ = function() {
+                console.log('jQuery not loaded, call ignored:', arguments);
+                return {
+                  ready: function(fn) { if (typeof fn === 'function') fn(); },
+                  on: function() { return this; },
+                  off: function() { return this; },
+                  click: function() { return this; },
+                  length: 0
+                };
+              };
+            }
+            
+            // Заглушка для VK API
+            if (typeof window.VK === 'undefined') {
+              window.VK = {
+                init: function() { console.log('VK API not loaded'); },
+                Api: {
+                  call: function() { console.log('VK API call ignored'); }
+                }
+              };
+            }
+            
+            // Заглушка для yaglaaction
+            if (typeof window.yaglaaction === 'undefined') {
+              window.yaglaaction = function() {
+                console.log('yaglaaction not loaded, call ignored:', arguments);
+              };
+            }
+            
+            console.log('✅ Заглушки инициализированы до загрузки GTM');
+          `
+        }} />
+        
         {/* Google Tag Manager */}
         <script dangerouslySetInnerHTML={{
           __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

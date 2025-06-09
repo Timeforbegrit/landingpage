@@ -44,8 +44,8 @@ export default function HeroSectionMobile({ onScrollToForm, onScrollToProduct }:
           </h1>
           
           <p className="text-base text-gray-300 mb-8 leading-relaxed px-2">
-            <strong className="text-white">Право (риски)</strong> объединяет все корпоративные риски в одной системе, 
-            формирует AI-план действий и превращает решения в задачи с ответственными
+            <strong className="text-white">Право (риски)</strong> объединяет все корпоративные риски, 
+            формирует ИИ-план действий и создаёт задачи с&nbsp;ответственными
           </p>
         </div>
 

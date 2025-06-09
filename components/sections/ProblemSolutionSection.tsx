@@ -48,7 +48,7 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
             <span className="bg-gradient-to-r from-blue-500 to-blue-700 bg-clip-text text-transparent">Решение</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            От хаоса к единой AI-платформе управления рисками
+            От хаоса к единой ИИ-платформе управления рисками
           </p>
         </div>
 
@@ -154,7 +154,7 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
                       icon: <TargetIcon className="w-6 h-6 text-white" />
                     },
                     {
-                      title: "AI-автоматизация",
+                      title: "ИИ-автоматизация",
                       description: "Выявление и планирование за минуты",
                       icon: <BrainCircuitIcon className="w-6 h-6 text-white" />
                     },
@@ -189,7 +189,7 @@ export default function ProblemSolutionSection({ onScrollToForm }: ProblemSoluti
                 <div className="mt-8 pt-6 border-t border-blue-500/20">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-400">AI-модуль</div>
+                      <div className="text-2xl font-bold text-blue-400">ИИ-модуль</div>
                       <div className="text-xs text-blue-300/70">полный анализ</div>
                     </div>
                     <div className="text-center">

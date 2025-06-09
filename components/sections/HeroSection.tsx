@@ -47,8 +47,8 @@ export default function HeroSection({ onScrollToForm, onScrollToProduct }: HeroS
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-            <strong className="text-white">Право (риски)</strong> объединяет все корпоративные риски в одной системе, 
-            формирует AI-план действий и превращает решения в задачи с ответственными
+            <strong className="text-white">Право (риски)</strong> объединяет все корпоративные риски, 
+            формирует ИИ-план действий и создаёт задачи с&nbsp;ответственными
           </p>
         </div>
 

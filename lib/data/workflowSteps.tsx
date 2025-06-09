@@ -18,7 +18,7 @@ export const workflowSteps: WorkflowStepData[] = [
   {
     step: "01",
     title: "Выявление",
-    description: "AI сканирует документы, процессы и выявляет потенциальные риски",
+    description: "ИИ сканирует документы, процессы и выявляет потенциальные риски",
     iconName: "BrainCircuit",
     color: "from-blue-500 to-cyan-500",
     bgColor: "bg-blue-500/10"
@@ -34,7 +34,7 @@ export const workflowSteps: WorkflowStepData[] = [
   {
     step: "03",
     title: "Планирование",
-    description: "Формирование AI-плана действий с конкретными шагами митигации",
+    description: "Формирование ИИ-плана действий с конкретными шагами митигации",
     iconName: "Target",
     color: "from-green-500 to-emerald-500",
     bgColor: "bg-green-500/10"

@@ -35,7 +35,7 @@ export default function FAQSection({ onContactClick }: FAQSectionProps) {
               </div>
               <div className="flex gap-4 flex-col">
                 <h2 className={`text-4xl md:text-5xl lg:text-6xl tracking-tight max-w-xl text-left font-bold text-white ${manrope.className}`}>
-                  Часто задаваемые вопросы
+                  Частые вопросы
                 </h2>
                 <p className="text-xl max-w-xl lg:max-w-lg leading-relaxed tracking-tight text-gray-300 text-left">
                   Ответы на основные вопросы о платформе «Право (риски)». 

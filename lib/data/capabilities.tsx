@@ -16,7 +16,7 @@ export interface CapabilityData {
 export const capabilities: CapabilityData[] = [
   {
     iconName: "Brain",
-    title: "AI-анализ рисков",
+    title: "ИИ-анализ рисков",
     description: "Автоматическое выявление и оценка корпоративных рисков с помощью ИИ"
   },
   {
