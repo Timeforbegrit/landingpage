@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { MonitorIcon, KanbanSquareIcon, ShieldIcon, FileTextIcon, BarChart3Icon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { Manrope } from 'next/font/google'
 import { productSlides } from '@/lib/data/productSlides'
@@ -26,11 +26,11 @@ export default function ProductTourSectionMobile() {
   const [activeSlide, setActiveSlide] = useState(0)
   
   // Функция для изменения слайда с GTM событием
-  const handleSlideChange = (newSlideIndex: number) => {
+  const handleSlideChange = useCallback((newSlideIndex: number) => {
     setActiveSlide(newSlideIndex)
     // Отправляем GTM событие просмотра слайда тура (нумерация с 1)
     GTMEvents.viewTourSlide(newSlideIndex + 1)
-  }
+  }, [])
   const [isImageLoading, setIsImageLoading] = useState(true)
   const [loadedImages, setLoadedImages] = useState<number[]>([])
   const [failedImages, setFailedImages] = useState<number[]>([])
@@ -75,7 +75,7 @@ export default function ProductTourSectionMobile() {
     }, 5000) // Переключение каждые 5 секунд
 
     return () => clearInterval(interval)
-  }, [isPaused])
+  }, [isPaused, activeSlide, handleSlideChange])
 
   // Обработка загрузки текущего изображения
   useEffect(() => {
