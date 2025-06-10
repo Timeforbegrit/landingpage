@@ -211,7 +211,7 @@ export default function ContactFormSection({
               <label htmlFor="marketingConsent" className="text-sm text-gray-300">
                 Я даю согласие на получение информационных и рекламных сообщений в соответствии с{' '}
                 <a 
-                  href="/privacy-policy.pdf" 
+                  href="/marketing-rules.pdf" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors"
