@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from 'react'
 import { MonitorIcon, KanbanSquareIcon, ShieldIcon, FileTextIcon, BarChart3Icon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { Manrope } from 'next/font/google'
 import { productSlides } from '@/lib/data/productSlides'
-import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { GTMEvents } from '@/lib/gtm'
 
@@ -31,9 +30,9 @@ export default function ProductTourSectionMobile() {
     // Отправляем GTM событие просмотра слайда тура (нумерация с 1)
     GTMEvents.viewTourSlide(newSlideIndex + 1)
   }, [])
-  const [isImageLoading, setIsImageLoading] = useState(true)
-  const [loadedImages, setLoadedImages] = useState<number[]>([])
-  const [failedImages, setFailedImages] = useState<number[]>([])
+  const [isVideoLoading, setIsVideoLoading] = useState(true)
+  const [loadedVideos, setLoadedVideos] = useState<number[]>([])
+  const [failedVideos, setFailedVideos] = useState<number[]>([])
   const [isPaused, setIsPaused] = useState(false)
 
   // Отправляем GTM событие просмотра первого слайда при монтировании
@@ -41,28 +40,29 @@ export default function ProductTourSectionMobile() {
     GTMEvents.viewTourSlide(1)
   }, [])
 
-  // Прелоадинг изображений
+  // Прелоадинг видео
   useEffect(() => {
-    const preloadImages = async () => {
-      const imagePromises = productSlides.map((slide, index) => {
+    const preloadVideos = async () => {
+      const videoPromises = productSlides.map((slide, index) => {
         return new Promise((resolve) => {
-          const img = new window.Image()
-          img.onload = () => {
-            setLoadedImages(prev => [...prev, index])
+          const video = document.createElement('video')
+          video.onloadeddata = () => {
+            setLoadedVideos(prev => [...prev, index])
             resolve(true)
           }
-          img.onerror = () => {
-            setFailedImages(prev => [...prev, index])
+          video.onerror = () => {
+            setFailedVideos(prev => [...prev, index])
             resolve(false)
           }
-          img.src = slide.image
+          video.src = slide.image
+          video.load()
         })
       })
       
-      await Promise.all(imagePromises)
+      await Promise.all(videoPromises)
     }
 
-    preloadImages()
+    preloadVideos()
   }, [])
 
   // Автоматическое переключение слайдов
@@ -77,14 +77,14 @@ export default function ProductTourSectionMobile() {
     return () => clearInterval(interval)
   }, [isPaused, activeSlide, handleSlideChange])
 
-  // Обработка загрузки текущего изображения
+  // Обработка загрузки текущего видео
   useEffect(() => {
-    if (loadedImages.includes(activeSlide) || failedImages.includes(activeSlide)) {
-      setIsImageLoading(false)
+    if (loadedVideos.includes(activeSlide) || failedVideos.includes(activeSlide)) {
+      setIsVideoLoading(false)
     } else {
-      setIsImageLoading(true)
+      setIsVideoLoading(true)
     }
-  }, [activeSlide, loadedImages, failedImages])
+  }, [activeSlide, loadedVideos, failedVideos])
 
   const nextSlide = () => {
     const newSlideIndex = (activeSlide + 1) % productSlides.length
@@ -163,24 +163,24 @@ export default function ProductTourSectionMobile() {
               {currentSlide.description}
             </p>
 
-            {/* Image */}
+            {/* Video */}
             <div className="aspect-[16/10] bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden rounded-xl mb-4">
-              <Image
+              <video
                 src={currentSlide.image}
-                alt={`Демонстрация: ${currentSlide.title}`}
-                fill
-                sizes="(max-width: 768px) 100vw, 400px"
-                className={`object-contain bg-white/5 rounded-xl transition-opacity duration-500 ${
-                  isImageLoading ? 'opacity-0' : 'opacity-100'
+                autoPlay
+                loop
+                muted
+                playsInline
+                className={`w-full h-full object-contain bg-white/5 rounded-xl transition-opacity duration-500 ${
+                  isVideoLoading ? 'opacity-0' : 'opacity-100'
                 }`}
-                priority={activeSlide === 0}
-                unoptimized={true}
-                onLoad={() => setIsImageLoading(false)}
-                onError={() => setFailedImages(prev => [...prev, activeSlide])}
+                onLoadedData={() => setIsVideoLoading(false)}
+                onError={() => setFailedVideos(prev => [...prev, activeSlide])}
+                aria-label={`Демонстрация: ${currentSlide.title}`}
               />
               
               {/* Loading state */}
-              {isImageLoading && (
+              {isVideoLoading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-gray-800/50">
                   <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
                 </div>
@@ -194,7 +194,7 @@ export default function ProductTourSectionMobile() {
               </div>
             </div>
 
-            {/* Navigation Arrows под изображением */}
+            {/* Navigation Arrows под видео */}
             <div className="flex items-center justify-between mb-4">
               <button
                 onClick={prevSlide}
