@@ -54,7 +54,7 @@ export default function Header({ onScrollToForm, smoothScrollTo }: HeaderProps) 
         <div className="flex items-center justify-between py-4">
           {/* Left - Logo */}
           <div className="flex-shrink-0">
-            <Link href="/" className={`flex items-center gap-3 ${manrope.className}`}>
+            <Link href="https://pravo.tech/product/risky/" className={`flex items-center gap-3 ${manrope.className}`}>
               <Image 
                 src="/images/logo.svg" 
                 alt="Право (риски)" 
