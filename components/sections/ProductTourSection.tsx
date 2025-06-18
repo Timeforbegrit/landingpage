@@ -59,6 +59,7 @@ export default function ProductTourSection() {
       const videoPromises = productSlides.map((slide, index) => {
         return new Promise((resolve) => {
           const video = document.createElement('video')
+          video.muted = true
           video.onloadeddata = () => {
             setLoadedVideos(prev => [...prev, index])
             resolve(true)

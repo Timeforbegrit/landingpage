@@ -34,9 +34,9 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold text-white mb-4">Продукт</h3>
             <ul className="space-y-2">
-              <li><Link href="#capabilities" className="text-gray-400 hover:text-white transition-colors">Возможности</Link></li>
-              <li><Link href="#how-it-works" className="text-gray-400 hover:text-white transition-colors">Как работает</Link></li>
-              <li><Link href="#faq" className="text-gray-400 hover:text-white transition-colors">FAQ</Link></li>
+              <li><Link href="https://pravo.tech/product/risky/#capabilities" className="text-gray-400 hover:text-white transition-colors">Возможности</Link></li>
+              <li><Link href="https://pravo.tech/product/risky/#how-it-works" className="text-gray-400 hover:text-white transition-colors">Как работает</Link></li>
+              <li><Link href="https://pravo.tech/product/risky/#faq" className="text-gray-400 hover:text-white transition-colors">FAQ</Link></li>
             </ul>
           </div>
 
